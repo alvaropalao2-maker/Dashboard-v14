@@ -136,7 +136,7 @@ export default function App() {
 
   /* ---------- data ---------- */
   const [user, setUser] = useState(seed.USER)
-  const [currency, setCurrency] = useState('USD')
+  const [currency, setCurrency] = useState('PEN')
   const [balance, setBalance] = useState(seed.BALANCE_USD)
   const [wallets, setWallets] = useState(seed.WALLETS)
   const [activities, setActivities] = useState(seed.ACTIVITIES)
