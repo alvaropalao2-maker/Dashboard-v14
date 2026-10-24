@@ -49,9 +49,9 @@ export default function TopBar() {
 
   return (
     <header className="topbar">
-      <button type="button" className="pill brand" onClick={() => go('overview')} aria-label="Vertix home">
+      <button type="button" className="pill brand" onClick={() => go('overview')} aria-label="Polplab home">
         <Logo />
-        <span className="brand-name">Vertix</span>
+        <span className="brand-name">Polplab</span>
       </button>
 
       <nav className="pill nav" ref={nav} aria-label="Primary">

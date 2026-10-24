@@ -1,4 +1,4 @@
-/* Demo data for Vertix. The first five activities, the wallets, the chart
+/* Demo data for Polplab. The first five activities, the wallets, the chart
    and the stat tiles match the reference design exactly. */
 
 export const USER = {
@@ -103,22 +103,22 @@ export const NOTIFICATIONS = [
 ]
 
 export const CONTACTS = [
-  { id: 'c1', name: 'Ayesha Khan', handle: '@ayesha.k', bank: 'Northstar Bank •• 4410', kind: 'person', fav: true, last: 250, lastDate: '12 Apr', hue: 14 },
-  { id: 'c2', name: 'Rafiq Ahmed', handle: '@rafiq', bank: 'Harbor Savings •• 1189', kind: 'person', fav: true, last: 1200, lastDate: '9 Apr', hue: 210 },
+  { id: 'c1', name: 'Lucía Fernández', handle: '@lucia.f', bank: 'Northstar Bank •• 4410', kind: 'person', fav: true, last: 250, lastDate: '12 Apr', hue: 14 },
+  { id: 'c2', name: 'Mateo Rojas', handle: '@mateo', bank: 'Harbor Savings •• 1189', kind: 'person', fav: true, last: 1200, lastDate: '9 Apr', hue: 210 },
   { id: 'c3', name: 'Pixel Studio', handle: 'pixelstudio.co', bank: 'Meridian Credit •• 7731', kind: 'business', fav: true, last: 5000, lastDate: '4 Apr', hue: 268 },
-  { id: 'c4', name: 'Nadia Islam', handle: '@nadia.i', bank: 'Northstar Bank •• 9012', kind: 'person', fav: false, last: 80, lastDate: '2 Apr', hue: 330 },
+  { id: 'c4', name: 'Valeria Torres', handle: '@valeria.t', bank: 'Northstar Bank •• 9012', kind: 'person', fav: false, last: 80, lastDate: '2 Apr', hue: 330 },
   { id: 'c5', name: 'Green Leaf Café', handle: 'greenleaf.cafe', bank: 'Harbor Savings •• 3302', kind: 'business', fav: false, last: 64, lastDate: '1 Apr', hue: 140 },
-  { id: 'c6', name: 'Tanvir Hasan', handle: '@tanvir', bank: 'Meridian Credit •• 5548', kind: 'person', fav: true, last: 450, lastDate: '29 Mar', hue: 38 },
+  { id: 'c6', name: 'Diego Quispe', handle: '@diego', bank: 'Meridian Credit •• 5548', kind: 'person', fav: true, last: 450, lastDate: '29 Mar', hue: 38 },
   { id: 'c7', name: 'Northwind Hosting', handle: 'northwind.host', bank: 'Atlas Bank •• 2207', kind: 'business', fav: false, last: 129, lastDate: '25 Mar', hue: 190 },
   { id: 'c8', name: 'Sara Williams', handle: '@sara.w', bank: 'Atlas Bank •• 6620', kind: 'person', fav: false, last: 300, lastDate: '21 Mar', hue: 0 },
   { id: 'c9', name: 'Orbit Labs', handle: 'orbitlabs.io', bank: 'Northstar Bank •• 0045', kind: 'business', fav: false, last: 0, lastDate: '—', hue: 245 },
-  { id: 'c10', name: 'Mehedi Hasan', handle: '@mehedi', bank: 'Harbor Savings •• 8876', kind: 'person', fav: false, last: 150, lastDate: '15 Mar', hue: 95 },
+  { id: 'c10', name: 'Camila Vargas', handle: '@camila', bank: 'Harbor Savings •• 8876', kind: 'person', fav: false, last: 150, lastDate: '15 Mar', hue: 95 },
 ]
 
 export const CONVERSATIONS = [
   {
     id: 'support',
-    name: 'Vertix Support',
+    name: 'Polplab Support',
     hue: 16,
     brand: true,
     online: true,
@@ -130,7 +130,7 @@ export const CONVERSATIONS = [
   },
   {
     id: 'c1',
-    name: 'Ayesha Khan',
+    name: 'Lucía Fernández',
     hue: 14,
     online: true,
     unread: 1,
@@ -233,7 +233,7 @@ export const AUTOSAVE = [
 ]
 
 export const OFFERS = [
-  { id: 'o1', icon: 'plane', title: '5% back on flights', body: 'Book with any airline using your Vertix card.', ends: 'Ends 30 Apr', active: true },
+  { id: 'o1', icon: 'plane', title: '5% back on flights', body: 'Book with any airline using your Polplab card.', ends: 'Ends 30 Apr', active: true },
   { id: 'o2', icon: 'cart', title: '2× points on groceries', body: 'Every grocery purchase earns double points.', ends: 'Ends 15 May', active: false },
   { id: 'o3', icon: 'coffee', title: 'Free coffee on Fridays', body: 'One drink on us at partner cafés every week.', ends: 'Ongoing', active: false },
   { id: 'o4', icon: 'monitor', title: '10% off software', body: 'Design, dev and productivity tools included.', ends: 'Ends 31 May', active: true },
@@ -264,8 +264,8 @@ export const BANKS = [
 
 export const SESSIONS = [
   { id: 's1', device: 'MacBook Pro 14″ · Safari', icon: 'laptop', place: 'Lima, Perú', when: 'Active now', current: true },
-  { id: 's2', device: 'iPhone 15 Pro · Vertix app', icon: 'phone', place: 'Lima, Perú', when: '2 hours ago', current: false },
-  { id: 's3', device: 'iPad Air · Vertix app', icon: 'tablet', place: 'Arequipa, Perú', when: 'Yesterday', current: false },
+  { id: 's2', device: 'iPhone 15 Pro · Polplab app', icon: 'phone', place: 'Lima, Perú', when: '2 hours ago', current: false },
+  { id: 's3', device: 'iPad Air · Polplab app', icon: 'tablet', place: 'Arequipa, Perú', when: 'Yesterday', current: false },
   { id: 's4', device: 'Windows PC · Chrome', icon: 'monitor', place: 'Dubai, UAE', when: '3 days ago', current: false },
 ]
 
@@ -316,7 +316,7 @@ export const STATEMENTS = [
 ]
 
 export const FAQS = [
-  { id: 'f1', topic: 'Payments', q: 'How long does an international transfer take?', a: 'Transfers between Vertix wallets are instant. Transfers to external banks usually arrive within 1–2 business days, depending on the receiving bank and currency.' },
+  { id: 'f1', topic: 'Payments', q: 'How long does an international transfer take?', a: 'Transfers between Polplab wallets are instant. Transfers to external banks usually arrive within 1–2 business days, depending on the receiving bank and currency.' },
   { id: 'f2', topic: 'Payments', q: 'Why is my payment showing as pending?', a: 'Pending means the merchant has authorised the amount but has not settled it yet. Most pending payments complete within 72 hours. Hotels and car rentals can take longer.' },
   { id: 'f3', topic: 'Cards', q: 'How do I freeze a card I cannot find?', a: 'Open Manage, pick the card and tap Freeze. Every new payment is declined instantly, and you can unfreeze the card the moment it turns up.' },
   { id: 'f4', topic: 'Cards', q: 'Can I change my monthly spending limit?', a: 'Yes. Go to Manage → Card controls and drag the monthly limit slider. The new limit applies straight away and is reflected on your dashboard.' },

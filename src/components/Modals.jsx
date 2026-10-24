@@ -102,7 +102,7 @@ function MoneyForm({ mode, initial, onClose }) {
 
 export function TransferModal({ open, payload, onClose }) {
   return (
-    <Modal open={open} onClose={onClose} title="Transfer money" sub="Instant between Vertix accounts, 1–2 days to other banks.">
+    <Modal open={open} onClose={onClose} title="Transfer money" sub="Instant between Polplab accounts, 1–2 days to other banks.">
       {open ? <MoneyForm key={JSON.stringify(payload)} mode="send" initial={payload} onClose={onClose} /> : null}
     </Modal>
   )
@@ -253,7 +253,7 @@ export function ActivityModal({ open, payload, onClose }) {
               onClick={() =>
                 saveFile(
                   `${a.id}-receipt.txt`,
-                  `VERTIX RECEIPT\n\n${a.title}\nOrder: ${a.id}\nAmount: ${money(a.price)}\nStatus: ${a.status}\nDate: ${stamp(a.date)}\n`,
+                  `POLPLAB RECEIPT\n\n${a.title}\nOrder: ${a.id}\nAmount: ${money(a.price)}\nStatus: ${a.status}\nDate: ${stamp(a.date)}\n`,
                 )
               }
             >
@@ -281,7 +281,7 @@ export function ActivityModal({ open, payload, onClose }) {
 export function LogoutModal({ open, onClose }) {
   const { signOut, user } = useApp()
   return (
-    <Modal open={open} onClose={onClose} title="Log out of Vertix?" width={400}>
+    <Modal open={open} onClose={onClose} title="Log out of Polplab?" width={400}>
       <div className="logout-body">
         <span className="logout-ic">
           <Icon name="logout" size={26} />

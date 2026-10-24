@@ -1,4 +1,4 @@
-# Vertix — Dashboard (demo)
+# Polplab — Dashboard (demo)
 
 Demo de dashboard financiero hecha con React 19 + Vite. No usa backend: los datos son de ejemplo (`src/data/seed.js`).
 

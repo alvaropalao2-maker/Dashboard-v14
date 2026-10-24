@@ -66,7 +66,7 @@ export default function BankCard({ card, flipped = false, reveal = false, big = 
             <span>{card.holder}</span>
             <b>{card.cvv}</b>
           </div>
-          <p>This card is issued by Vertix. Use is subject to the cardholder agreement. If found, return to any Vertix partner.</p>
+          <p>This card is issued by Polplab. Use is subject to the cardholder agreement. If found, return to any Polplab partner.</p>
         </div>
       </div>
     </div>

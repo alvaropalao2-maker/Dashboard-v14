@@ -127,7 +127,7 @@ export default function Invoices() {
                 <div className="paper-brand">
                   <Logo size={36} />
                   <span>
-                    <strong>Vertix</strong>
+                    <strong>Polplab</strong>
                     <small>Polplab</small>
                   </span>
                 </div>

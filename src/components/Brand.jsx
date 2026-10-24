@@ -1,24 +1,10 @@
 import { useId } from 'react'
 import Icon from './Icon'
+import polplabLogo from '../assets/polplab-logo.webp'
 import { initials } from '../lib/format'
 
 export function Logo({ size = 44 }) {
-  const id = useId()
-  return (
-    <svg width={size} height={size} viewBox="0 0 44 44" aria-hidden="true" className="logo-mark">
-      <defs>
-        <linearGradient id={id} x1="6" y1="4" x2="38" y2="42" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stopColor="var(--accent-2)" />
-          <stop offset="1" stopColor="var(--accent-deep)" />
-        </linearGradient>
-      </defs>
-      <circle cx="22" cy="22" r="22" fill={`url(#${id})`} />
-      <g fill="none" stroke="#fff" strokeWidth="4.2" strokeLinecap="round" strokeLinejoin="round">
-        <path className="logo-stroke" d="M13.2 13.5 22 30.8" />
-        <path className="logo-stroke two" d="M30.8 13.5 22 30.8" />
-      </g>
-    </svg>
-  )
+  return <img src={polplabLogo} width={size} height={size} alt="" aria-hidden="true" className="logo-mark" />
 }
 
 /** Illustrated avatar for the signed-in user. */

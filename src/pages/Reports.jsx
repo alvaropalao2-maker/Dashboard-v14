@@ -35,7 +35,7 @@ export default function Reports() {
           type="button"
           className="btn solid lg"
           onClick={() => {
-            saveFile('vertix-transactions.csv', toCsv(activities), 'text/csv')
+            saveFile('polplab-transactions.csv', toCsv(activities), 'text/csv')
             toast('Export ready', `${activities.length} transactions saved as CSV.`, { icon: 'download' })
           }}
         >
@@ -132,7 +132,7 @@ export default function Reports() {
                   className="icon-btn soft"
                   aria-label={`Download ${s.name}`}
                   onClick={() => {
-                    saveFile(`${s.name.toLowerCase().replace(/\s+/g, '-')}.txt`, `VERTIX — ${s.name}\n${s.meta}\n\nIncome: ${k(income)}\nExpenses: ${k(expense)}\nNet: ${k(net)}\n`)
+                    saveFile(`${s.name.toLowerCase().replace(/\s+/g, '-')}.txt`, `POLPLAB — ${s.name}\n${s.meta}\n\nIncome: ${k(income)}\nExpenses: ${k(expense)}\nNet: ${k(net)}\n`)
                     toast('Statement downloaded', s.name, { icon: 'download' })
                   }}
                 >

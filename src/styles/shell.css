@@ -68,6 +68,10 @@
   padding: 0 24px 0 8px;
   animation-delay: 0.05s;
 }
+.logo-mark {
+  scale: 1.8; /* el logo trae margen transparente */
+  object-fit: contain;
+}
 .brand .logo-mark {
   animation: logoIn 1s var(--spring) 0.15s both;
 }

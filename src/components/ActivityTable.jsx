@@ -108,7 +108,7 @@ export default function ActivityTable({ variant = 'compact', initialSelected = [
   const counts = STATUSES.reduce((m, s) => ({ ...m, [s]: activities.filter((a) => a.status === s).length }), {})
 
   const exportCsv = () => {
-    saveFile('vertix-activity.csv', toCsv(filtered), 'text/csv')
+    saveFile('polplab-activity.csv', toCsv(filtered), 'text/csv')
     toast('Export ready', `${filtered.length} transactions saved as CSV.`, { icon: 'download' })
   }
 

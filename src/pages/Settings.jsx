@@ -96,7 +96,7 @@ export default function Settings() {
 
   return (
     <>
-      <PageHead title="Settings" sub="Make Vertix work the way you do." />
+      <PageHead title="Settings" sub="Make Polplab work the way you do." />
 
       <div className="settings-grid">
         <section className="card settings-nav" style={{ '--d': '0ms' }}>
@@ -121,7 +121,7 @@ export default function Settings() {
             {tab === 'general' ? (
               <>
                 <h2 className="card-title big">General</h2>
-                <p className="card-sub">These apply everywhere you use Vertix.</p>
+                <p className="card-sub">These apply everywhere you use Polplab.</p>
                 <div className="settings-form">
                   <label className="field">
                     <span>Language</span>

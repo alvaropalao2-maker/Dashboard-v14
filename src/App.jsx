@@ -80,21 +80,21 @@ const store = (key, value) => {
 
 export default function App() {
   /* ---------- appearance ---------- */
-  const [theme, setTheme] = useState(() => stored('vertix-theme', 'light'))
-  const [accent, setAccent] = useState(() => stored('vertix-accent', 'orange'))
-  const [reduceMotion, setReduceMotion] = useState(() => stored('vertix-motion', 'full') === 'reduced')
+  const [theme, setTheme] = useState(() => stored('polplab-theme', 'light'))
+  const [accent, setAccent] = useState(() => stored('polplab-accent', 'orange'))
+  const [reduceMotion, setReduceMotion] = useState(() => stored('polplab-motion', 'full') === 'reduced')
 
   useLayoutEffect(() => {
     document.documentElement.dataset.theme = theme
-    store('vertix-theme', theme)
+    store('polplab-theme', theme)
   }, [theme])
   useLayoutEffect(() => {
     document.documentElement.dataset.accent = accent
-    store('vertix-accent', accent)
+    store('polplab-accent', accent)
   }, [accent])
   useLayoutEffect(() => {
     document.documentElement.dataset.motion = reduceMotion ? 'reduced' : 'full'
-    store('vertix-motion', reduceMotion ? 'reduced' : 'full')
+    store('polplab-motion', reduceMotion ? 'reduced' : 'full')
   }, [reduceMotion])
 
   const switchTheme = useCallback(
