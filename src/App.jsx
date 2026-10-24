@@ -369,6 +369,7 @@ export default function App() {
           <SideRail />
           <Main key={view} page={page} booting={booting} />
         </div>
+        <footer className="legal">© {new Date().getFullYear()} Polplab. All rights reserved.</footer>
       </div>
 
       <TransferModal open={modal?.type === 'transfer'} payload={modal?.payload} onClose={closeModal} />

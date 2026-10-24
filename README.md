@@ -9,3 +9,5 @@ npm run build    # genera dist/
 ```
 
 Se despliega solo en GitHub Pages con cada push a `main`.
+
+© 2026 Polplab. Todos los derechos reservados. Ver [LICENSE](LICENSE).

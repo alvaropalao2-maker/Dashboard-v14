@@ -2,6 +2,8 @@
   "name": "dashboard-v14",
   "private": true,
   "version": "0.0.0",
+  "author": "Polplab",
+  "license": "UNLICENSED",
   "type": "module",
   "scripts": {
     "dev": "vite",
