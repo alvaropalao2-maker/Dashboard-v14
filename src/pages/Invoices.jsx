@@ -128,7 +128,7 @@ export default function Invoices() {
                   <Logo size={36} />
                   <span>
                     <strong>Vertix</strong>
-                    <small>Code XR Studio</small>
+                    <small>Polplab</small>
                   </span>
                 </div>
                 <div className="paper-no">

@@ -145,7 +145,7 @@ export default function Settings() {
                   <label className="field">
                     <span>Time zone</span>
                     <select value={prefs.timezone} onChange={setPref('timezone')}>
-                      {['Asia/Dhaka (GMT+6)', 'Asia/Dubai (GMT+4)', 'Europe/London (GMT+1)', 'America/New_York (GMT-4)'].map((z) => (
+                      {['America/Lima (GMT-5)', 'Asia/Dubai (GMT+4)', 'Europe/London (GMT+1)', 'America/New_York (GMT-4)'].map((z) => (
                         <option key={z}>{z}</option>
                       ))}
                     </select>
@@ -197,7 +197,7 @@ export default function Settings() {
                   </span>
                   <span className="control-txt">
                     <strong>Two-factor authentication</strong>
-                    <small>{security.twoFactor ? 'On — codes go to +880 •••• 678' : 'Off — we strongly recommend turning this on'}</small>
+                    <small>{security.twoFactor ? 'On — codes go to +51 •••• 460' : 'Off — we strongly recommend turning this on'}</small>
                   </span>
                   <Toggle on={security.twoFactor} label="Two-factor authentication" onChange={(v) => setSecurity((s) => ({ ...s, twoFactor: v }))} />
                 </div>

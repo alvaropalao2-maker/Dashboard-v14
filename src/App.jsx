@@ -155,7 +155,7 @@ export default function App() {
   const [security, setSecurity] = useState({ twoFactor: true, biometric: true, alerts: true })
   const [prefs, setPrefs] = useState({
     language: 'English (US)',
-    timezone: 'Asia/Dhaka (GMT+6)',
+    timezone: 'America/Lima (GMT-5)',
     dateFormat: '17 Apr, 2026',
     weekStart: 'Monday',
     notify: {

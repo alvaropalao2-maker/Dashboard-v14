@@ -2,11 +2,11 @@
    and the stat tiles match the reference design exactly. */
 
 export const USER = {
-  first: 'Code XR',
-  name: 'Code XR',
-  email: 'hello@codexr.studio',
-  phone: '+880 1712 345 678',
-  location: 'Dhaka, Bangladesh',
+  first: 'Polplab',
+  name: 'Polplab',
+  email: 'contacto@polplab.com',
+  phone: '+51 965 485 460',
+  location: 'Lima, Perú',
   memberSince: 'March 2021',
 }
 
@@ -52,7 +52,7 @@ export const CARDS = [
   {
     id: 'k1',
     skin: 'onyx',
-    holder: 'Code XR',
+    holder: 'Polplab',
     number: '5412 7534 9821 6782',
     exp: '09/29',
     cvv: '611',
@@ -63,7 +63,7 @@ export const CARDS = [
   {
     id: 'k2',
     skin: 'ember',
-    holder: 'Code XR',
+    holder: 'Polplab',
     number: '4921 0087 3315 4356',
     exp: '03/28',
     cvv: '208',
@@ -99,7 +99,7 @@ export const NOTIFICATIONS = [
   { id: 'n2', icon: 'clock', tone: 'amber', title: 'Hotel Booking is pending', body: '$32,750.00 is waiting for confirmation', time: '1h ago', unread: true },
   { id: 'n3', icon: 'card', tone: 'accent', title: 'Card •••• 4356 used online', body: 'Software License · $15,900.00', time: '5h ago', unread: true },
   { id: 'n4', icon: 'chart', tone: 'blue', title: 'Your April report is ready', body: 'Income is up 8% from last month', time: 'Yesterday', unread: false },
-  { id: 'n5', icon: 'shield', tone: 'muted', title: 'New sign-in from iPhone 15 Pro', body: 'Dhaka, Bangladesh', time: '2 days ago', unread: false },
+  { id: 'n5', icon: 'shield', tone: 'muted', title: 'New sign-in from iPhone 15 Pro', body: 'Lima, Perú', time: '2 days ago', unread: false },
 ]
 
 export const CONTACTS = [
@@ -124,7 +124,7 @@ export const CONVERSATIONS = [
     online: true,
     unread: 2,
     messages: [
-      { from: 'them', text: 'Hi Code XR 👋 Your GBP wallet was set to inactive after 90 days without activity.', time: '09:12 AM' },
+      { from: 'them', text: 'Hi Polplab 👋 Your GBP wallet was set to inactive after 90 days without activity.', time: '09:12 AM' },
       { from: 'them', text: 'You can reactivate it from the Wallets panel on your dashboard any time.', time: '09:12 AM' },
     ],
   },
@@ -263,9 +263,9 @@ export const BANKS = [
 ]
 
 export const SESSIONS = [
-  { id: 's1', device: 'MacBook Pro 14″ · Safari', icon: 'laptop', place: 'Dhaka, Bangladesh', when: 'Active now', current: true },
-  { id: 's2', device: 'iPhone 15 Pro · Vertix app', icon: 'phone', place: 'Dhaka, Bangladesh', when: '2 hours ago', current: false },
-  { id: 's3', device: 'iPad Air · Vertix app', icon: 'tablet', place: 'Chattogram, Bangladesh', when: 'Yesterday', current: false },
+  { id: 's1', device: 'MacBook Pro 14″ · Safari', icon: 'laptop', place: 'Lima, Perú', when: 'Active now', current: true },
+  { id: 's2', device: 'iPhone 15 Pro · Vertix app', icon: 'phone', place: 'Lima, Perú', when: '2 hours ago', current: false },
+  { id: 's3', device: 'iPad Air · Vertix app', icon: 'tablet', place: 'Arequipa, Perú', when: 'Yesterday', current: false },
   { id: 's4', device: 'Windows PC · Chrome', icon: 'monitor', place: 'Dubai, UAE', when: '3 days ago', current: false },
 ]
 

@@ -116,8 +116,8 @@ export default function Help() {
               className="support-opt rv"
               style={{ '--i': 3 }}
               onClick={() => {
-                navigator.clipboard?.writeText('support@vertix.app').catch(() => {})
-                toast('Email copied', 'support@vertix.app', { icon: 'mail' })
+                navigator.clipboard?.writeText('contacto@polplab.com').catch(() => {})
+                toast('Email copied', 'contacto@polplab.com', { icon: 'mail' })
               }}
             >
               <span>
@@ -125,17 +125,17 @@ export default function Help() {
               </span>
               <span className="control-txt">
                 <strong>Email us</strong>
-                <small>support@vertix.app</small>
+                <small>contacto@polplab.com</small>
               </span>
               <Icon name="copy" size={17} />
             </button>
-            <button type="button" className="support-opt rv" style={{ '--i': 4 }} onClick={() => toast('Calling support…', '+880 9612 000 111 · 24/7', { icon: 'phone' })}>
+            <button type="button" className="support-opt rv" style={{ '--i': 4 }} onClick={() => toast('Calling support…', '+51 965 485 460 · 24/7', { icon: 'phone' })}>
               <span>
                 <Icon name="phone" size={20} />
               </span>
               <span className="control-txt">
                 <strong>Call us</strong>
-                <small>24/7 · +880 9612 000 111</small>
+                <small>24/7 · +51 965 485 460</small>
               </span>
               <Icon name="arrowRight" size={18} />
             </button>

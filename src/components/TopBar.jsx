@@ -193,7 +193,7 @@ export default function TopBar() {
               </span>
               <span className="notif-txt">
                 <strong>New sign-in from iPhone</strong>
-                <small>Dhaka, Bangladesh · 2 hours ago</small>
+                <small>Lima, Perú · 2 hours ago</small>
               </span>
               <button
                 type="button"

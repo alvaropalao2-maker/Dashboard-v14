@@ -10,7 +10,7 @@ const CONTROLS = [
   { key: 'online', icon: 'globe', label: 'Online payments', body: 'Shops, subscriptions and in-app purchases' },
   { key: 'contactless', icon: 'contactless', label: 'Contactless', body: 'Tap to pay up to $250 per payment' },
   { key: 'atm', icon: 'bank', label: 'ATM withdrawals', body: 'Up to $1,000 per day' },
-  { key: 'abroad', icon: 'plane', label: 'Use abroad', body: 'Payments outside Bangladesh' },
+  { key: 'abroad', icon: 'plane', label: 'Use abroad', body: 'Payments outside Perú' },
 ]
 
 export default function Manage() {
