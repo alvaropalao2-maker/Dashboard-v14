@@ -716,4 +716,5 @@ export default {
   '2 invoices are overdue': '2 facturas vencidas',
   'anywhere': 'en cualquier parte',
   '$ amount': 'Monto en $',
+  'Peruvian Sol': 'Sol peruano',
 }

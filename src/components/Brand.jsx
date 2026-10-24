@@ -57,6 +57,13 @@ const FLAG_ART = {
       ))}
     </>
   ),
+  pe: (
+    <>
+      <rect width="20" height="20" fill="#fff" />
+      <rect width="6.67" height="20" fill="#d91023" />
+      <rect x="13.33" width="6.67" height="20" fill="#d91023" />
+    </>
+  ),
   de: (
     <>
       <rect width="20" height="6.7" fill="#1a1a1a" />
