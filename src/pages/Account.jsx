@@ -4,6 +4,7 @@ import { Avatar } from '../components/Brand'
 import { PageHead, Toggle } from '../components/ui'
 import { useApp } from '../lib/store'
 import { money, uid } from '../lib/format'
+import { useTr } from '../lib/i18n'
 
 const LIMITS = [
   { label: 'Daily transfers', used: 12400, cap: 25000 },
@@ -12,6 +13,7 @@ const LIMITS = [
 ]
 
 function ProfileForm({ user, onSave, onCancel }) {
+  const tr = useTr()
   const [draft, setDraft] = useState(user)
   const set = (k) => (e) => setDraft((d) => ({ ...d, [k]: e.target.value }))
   return (
@@ -24,30 +26,30 @@ function ProfileForm({ user, onSave, onCancel }) {
     >
       <div className="field-row">
         <label className="field">
-          <span>Full name</span>
+          <span>{tr('Full name')}</span>
           <input value={draft.name} onChange={set('name')} required />
         </label>
         <label className="field">
-          <span>Email</span>
+          <span>{tr('Email')}</span>
           <input type="email" value={draft.email} onChange={set('email')} required />
         </label>
       </div>
       <div className="field-row">
         <label className="field">
-          <span>Phone</span>
+          <span>{tr('Phone')}</span>
           <input value={draft.phone} onChange={set('phone')} />
         </label>
         <label className="field">
-          <span>Location</span>
+          <span>{tr('Location')}</span>
           <input value={draft.location} onChange={set('location')} />
         </label>
       </div>
       <div className="row-btns end">
         <button type="button" className="btn lg" onClick={onCancel}>
-          Cancel
+          {tr('Cancel')}
         </button>
         <button type="submit" className="btn solid lg">
-          Save changes
+          {tr('Save changes')}
         </button>
       </div>
     </form>
@@ -55,41 +57,42 @@ function ProfileForm({ user, onSave, onCancel }) {
 }
 
 export default function Account() {
+  const tr = useTr()
   const { user, setUser, banks, setBanks, sessions, setSessions, security, setSecurity, toast } = useApp()
   const [editing, setEditing] = useState(false)
 
   return (
     <>
-      <PageHead title="Account" sub="Your personal details, linked banks and security — all in one place." />
+      <PageHead title={tr('Account')} sub={tr('Your personal details, linked banks and security — all in one place.')} />
 
       <div className="account-grid">
         <section className="card profile-card" style={{ '--d': '0ms' }}>
           <div className="profile-top rv" style={{ '--i': 0 }}>
             <div className="profile-avatar">
               <Avatar size={84} />
-              <span className="verified" title="Identity verified">
+              <span className="verified" title={tr('Identity verified')}>
                 <Icon name="check" size={12} stroke={3} />
               </span>
             </div>
             <div className="profile-id">
-              <h2>{user.name}</h2>
+              <h2>{tr(user.name)}</h2>
               <p>{user.email}</p>
               <div className="chips-row">
                 <span className="pill-tag green">
                   <Icon name="shield" size={13} />
-                  Verified
+                  {tr('Verified')}
                 </span>
                 <span className="pill-tag accent">
                   <Icon name="crown" size={13} />
-                  Gold member
+                  {tr('Gold member')}
                 </span>
-                <span className="pill-tag">Since {user.memberSince}</span>
+                <span className="pill-tag">{tr('Since {date}', { date: tr(user.memberSince) })}</span>
               </div>
             </div>
             {!editing ? (
               <button type="button" className="btn ghost lg" onClick={() => setEditing(true)}>
                 <Icon name="edit" size={17} />
-                Edit profile
+                {tr('Edit profile')}
               </button>
             ) : null}
           </div>
@@ -101,7 +104,7 @@ export default function Account() {
               onSave={(d) => {
                 setUser({ ...d, first: d.name.trim().split(/\s+/)[0] })
                 setEditing(false)
-                toast('Profile updated', 'Your changes are saved.', { icon: 'user' })
+                toast(tr('Profile updated'), tr('Your changes are saved.'), { icon: 'user' })
               }}
             />
           ) : (
@@ -116,7 +119,7 @@ export default function Account() {
                   <span className="control-ic">
                     <Icon name={f.icon} size={18} />
                   </span>
-                  <dt>{f.k}</dt>
+                  <dt>{tr(f.k)}</dt>
                   <dd>{f.v}</dd>
                 </div>
               ))}
@@ -126,18 +129,18 @@ export default function Account() {
 
         <section className="card banks-card" style={{ '--d': '90ms' }}>
           <div className="section-head rv" style={{ '--i': 0 }}>
-            <h2 className="card-title big">Linked banks</h2>
+            <h2 className="card-title big">{tr('Linked banks')}</h2>
             <button
               type="button"
               className="add-new"
               onClick={() => {
                 const n = String(Math.floor(1000 + Math.random() * 9000))
                 setBanks((b) => [...b, { id: uid(), name: 'Atlas Bank', mask: `•••• ${n}`, type: 'Checking', primary: false, hue: 262 }])
-                toast('Bank linked', `Atlas Bank •••• ${n} is ready for transfers.`, { icon: 'bank' })
+                toast(tr('Bank linked'), tr(`Atlas Bank •••• ${n} is ready for transfers.`), { icon: 'bank' })
               }}
             >
               <Icon name="plus" size={16} stroke={2} />
-              Link bank
+              {tr('Link bank')}
             </button>
           </div>
           <div className="bank-list">
@@ -147,13 +150,13 @@ export default function Account() {
                   <Icon name="bank" size={20} />
                 </span>
                 <span className="control-txt">
-                  <strong>{b.name}</strong>
+                  <strong>{tr(b.name)}</strong>
                   <small>
-                    {b.type} · {b.mask}
+                    {tr(b.type)} · {b.mask}
                   </small>
                 </span>
                 {b.primary ? (
-                  <span className="pill-tag accent">Primary</span>
+                  <span className="pill-tag accent">{tr('Primary')}</span>
                 ) : (
                   <div className="bank-acts">
                     <button
@@ -161,18 +164,18 @@ export default function Account() {
                       className="btn tiny"
                       onClick={() => {
                         setBanks((list) => list.map((x) => ({ ...x, primary: x.id === b.id })))
-                        toast('Primary bank changed', `${b.name} ${b.mask}`, { icon: 'bank' })
+                        toast(tr('Primary bank changed'), `${b.name} ${b.mask}`, { icon: 'bank' })
                       }}
                     >
-                      Make primary
+                      {tr('Make primary')}
                     </button>
                     <button
                       type="button"
                       className="icon-btn"
-                      aria-label={`Remove ${b.name}`}
+                      aria-label={tr(`Remove ${b.name}`)}
                       onClick={() => {
                         setBanks((list) => list.filter((x) => x.id !== b.id))
-                        toast('Bank removed', `${b.name} ${b.mask}`, { icon: 'trash' })
+                        toast(tr('Bank removed'), `${b.name} ${b.mask}`, { icon: 'trash' })
                       }}
                     >
                       <Icon name="trash" size={17} />
@@ -186,8 +189,8 @@ export default function Account() {
 
         <section className="card security-card" style={{ '--d': '170ms' }}>
           <div className="section-head rv" style={{ '--i': 0 }}>
-            <h2 className="card-title big">Security</h2>
-            <span className={`pill-tag ${security.twoFactor ? 'green' : 'amber'}`}>{security.twoFactor ? 'Strong' : 'Needs attention'}</span>
+            <h2 className="card-title big">{tr('Security')}</h2>
+            <span className={`pill-tag ${security.twoFactor ? 'green' : 'amber'}`}>{security.twoFactor ? tr('Strong') : tr('Needs attention')}</span>
           </div>
           <div className="control-list">
             {[
@@ -200,15 +203,15 @@ export default function Account() {
                   <Icon name={c.icon} size={19} />
                 </span>
                 <span className="control-txt">
-                  <strong>{c.label}</strong>
-                  <small>{c.body}</small>
+                  <strong>{tr(c.label)}</strong>
+                  <small>{tr(c.body)}</small>
                 </span>
-                <Toggle on={security[c.key]} label={c.label} onChange={(v) => setSecurity((s) => ({ ...s, [c.key]: v }))} />
+                <Toggle on={security[c.key]} label={tr(c.label)} onChange={(v) => setSecurity((s) => ({ ...s, [c.key]: v }))} />
               </div>
             ))}
           </div>
           <h3 className="sub-title rv" style={{ '--i': 4 }}>
-            Active sessions
+            {tr('Active sessions')}
           </h3>
           <div className="session-list">
             {sessions.map((s, i) => (
@@ -217,23 +220,23 @@ export default function Account() {
                   <Icon name={s.icon} size={18} />
                 </span>
                 <span className="control-txt">
-                  <strong>{s.device}</strong>
+                  <strong>{tr(s.device)}</strong>
                   <small>
-                    {s.place} · {s.when}
+                    {tr(s.place)} · {tr(s.when)}
                   </small>
                 </span>
                 {s.current ? (
-                  <span className="pill-tag green">This device</span>
+                  <span className="pill-tag green">{tr('This device')}</span>
                 ) : (
                   <button
                     type="button"
                     className="btn tiny danger"
                     onClick={() => {
                       setSessions((list) => list.filter((x) => x.id !== s.id))
-                      toast('Session revoked', s.device, { icon: 'logout' })
+                      toast(tr('Session revoked'), tr(s.device), { icon: 'logout' })
                     }}
                   >
-                    Revoke
+                    {tr('Revoke')}
                   </button>
                 )}
               </div>
@@ -243,8 +246,8 @@ export default function Account() {
 
         <section className="card limits-card" style={{ '--d': '240ms' }}>
           <div className="section-head rv" style={{ '--i': 0 }}>
-            <h2 className="card-title big">Account limits</h2>
-            <span className="muted">Resets daily at midnight</span>
+            <h2 className="card-title big">{tr('Account limits')}</h2>
+            <span className="muted">{tr('Resets daily at midnight')}</span>
           </div>
           <div className="limit-rows">
             {LIMITS.map((l, i) => {
@@ -252,7 +255,7 @@ export default function Account() {
               return (
                 <div key={l.label} className="limit-row rv" style={{ '--i': i + 1 }}>
                   <div className="lr-head">
-                    <span>{l.label}</span>
+                    <span>{tr(l.label)}</span>
                     <span>
                       <b>{money(l.used, '$', 0)}</b> / {money(l.cap, '$', 0)}
                     </span>

@@ -4,8 +4,10 @@ import { Persona } from '../components/Brand'
 import { Empty, Modal, PageHead, Segmented } from '../components/ui'
 import { useApp } from '../lib/store'
 import { money, uid } from '../lib/format'
+import { useTr } from '../lib/i18n'
 
 function AddContact({ onAdd }) {
+  const tr = useTr()
   const [f, setF] = useState({ name: '', handle: '', bank: '', kind: 'person' })
   const set = (k) => (e) => setF((d) => ({ ...d, [k]: e.target.value }))
   return (
@@ -17,21 +19,21 @@ function AddContact({ onAdd }) {
       }}
     >
       <label className="field">
-        <span>Name</span>
-        <input value={f.name} onChange={set('name')} placeholder="Full name or business" autoFocus />
+        <span>{tr('Name')}</span>
+        <input value={f.name} onChange={set('name')} placeholder={tr('Full name or business')} autoFocus />
       </label>
       <div className="field-row">
         <label className="field">
-          <span>Handle or website</span>
-          <input value={f.handle} onChange={set('handle')} placeholder="@handle" />
+          <span>{tr('Handle or website')}</span>
+          <input value={f.handle} onChange={set('handle')} placeholder={tr('@handle')} />
         </label>
         <label className="field">
-          <span>Bank account</span>
-          <input value={f.bank} onChange={set('bank')} placeholder="Bank •• 1234" />
+          <span>{tr('Bank account')}</span>
+          <input value={f.bank} onChange={set('bank')} placeholder={tr('Bank •• 1234')} />
         </label>
       </div>
       <div className="field">
-        <span>Type</span>
+        <span>{tr('Type')}</span>
         <Segmented
           items={[
             { key: 'person', label: 'Person' },
@@ -43,13 +45,14 @@ function AddContact({ onAdd }) {
       </div>
       <button type="submit" className="btn solid lg block" disabled={!f.name.trim()}>
         <Icon name="plus" size={17} />
-        Save contact
+        {tr('Save contact')}
       </button>
     </form>
   )
 }
 
 export default function Contacts() {
+  const tr = useTr()
   const { contacts, setContacts, conversations, sendMoney, balance, openModal, go, toast } = useApp()
   const [filter, setFilter] = useState('all')
   const [q, setQ] = useState('')
@@ -68,10 +71,10 @@ export default function Contacts() {
 
   return (
     <>
-      <PageHead title="Contacts" sub="The people and businesses you pay the most, one tap away.">
+      <PageHead title={tr('Contacts')} sub={tr('The people and businesses you pay the most, one tap away.')}>
         <button type="button" className="btn solid lg" onClick={() => setAdding(true)}>
           <Icon name="plus" size={18} />
-          Add contact
+          {tr('Add contact')}
         </button>
       </PageHead>
 
@@ -79,8 +82,8 @@ export default function Contacts() {
         <div className="quick-left">
           <div className="section-head rv" style={{ '--i': 0 }}>
             <div>
-              <h2 className="card-title big">Quick transfer</h2>
-              <p className="card-sub">Pick a favourite, choose an amount, done.</p>
+              <h2 className="card-title big">{tr('Quick transfer')}</h2>
+              <p className="card-sub">{tr('Pick a favourite, choose an amount, done.')}</p>
             </div>
           </div>
           <div className="fav-row">
@@ -94,7 +97,7 @@ export default function Contacts() {
               <span className="fav-add">
                 <Icon name="plus" size={22} />
               </span>
-              <span>New</span>
+              <span>{tr('New')}</span>
             </button>
           </div>
         </div>
@@ -112,14 +115,14 @@ export default function Contacts() {
           <div className="qt-to">
             {pick ? <Persona name={pick.name} hue={pick.hue} size={38} /> : null}
             <span className="control-txt">
-              <small>Sending to</small>
-              <strong>{pick ? pick.name : 'Pick someone'}</strong>
+              <small>{tr('Sending to')}</small>
+              <strong>{pick ? tr(pick.name) : tr('Pick someone')}</strong>
             </span>
           </div>
           <div className="amount-input">
             <b>$</b>
-            <input inputMode="decimal" value={amount} onChange={(e) => setAmount(e.target.value.replace(/[^\d.]/g, ''))} aria-label="Amount" />
-            <em>USD</em>
+            <input inputMode="decimal" value={amount} onChange={(e) => setAmount(e.target.value.replace(/[^\d.]/g, ''))} aria-label={tr('Amount')} />
+            <em>{tr('USD')}</em>
           </div>
           <div className="chips">
             {[50, 100, 250, 500].map((v) => (
@@ -132,7 +135,7 @@ export default function Contacts() {
             <span key={sentTo ?? 'idle'} className={sentTo ? 'sent-flash' : ''}>
               <Icon name={sentTo ? 'check' : 'send'} size={18} />
             </span>
-            Send {value > 0 ? money(value) : ''}
+            {tr('Send {amount}', { amount: value > 0 ? money(value) : '' }).trim()}
           </button>
         </form>
       </section>
@@ -149,12 +152,12 @@ export default function Contacts() {
         />
         <label className="search-box">
           <Icon name="search" size={18} />
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search contacts" aria-label="Search contacts" />
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={tr('Search contacts')} aria-label={tr('Search contacts')} />
         </label>
       </div>
 
       <div className="contact-grid" key={filter}>
-        {shown.length === 0 ? <Empty icon="users" title="No contacts found" body="Try another name or filter." /> : null}
+        {shown.length === 0 ? <Empty icon="users" title={tr('No contacts found')} body={tr('Try another name or filter.')} /> : null}
         {shown.map((c, i) => {
           const chat = conversations.find((x) => x.id === c.id)
           return (
@@ -162,30 +165,30 @@ export default function Contacts() {
               <button
                 type="button"
                 className={`star ${c.fav ? 'on' : ''}`}
-                aria-label={c.fav ? 'Remove from favourites' : 'Add to favourites'}
+                aria-label={c.fav ? tr('Remove from favourites') : tr('Add to favourites')}
                 onClick={() => setContacts((list) => list.map((x) => (x.id === c.id ? { ...x, fav: !x.fav } : x)))}
               >
                 <Icon name="star" size={18} />
               </button>
               <Persona name={c.name} hue={c.hue} size={56} />
-              <strong>{c.name}</strong>
+              <strong>{tr(c.name)}</strong>
               <small>{c.handle}</small>
-              <span className="pill-tag">{c.kind === 'business' ? 'Business' : 'Person'}</span>
+              <span className="pill-tag">{c.kind === 'business' ? tr('Business') : tr('Person')}</span>
               <p className="contact-bank">{c.bank}</p>
-              <p className="contact-last">{c.last ? `Last sent ${money(c.last, '$', 0)} · ${c.lastDate}` : 'No transfers yet'}</p>
+              <p className="contact-last">{c.last ? tr(`Last sent ${money(c.last, '$', 0)} · ${c.lastDate}`) : tr('No transfers yet')}</p>
               <div className="contact-acts">
                 <button type="button" className="btn solid tiny" onClick={() => openModal('transfer', { to: c.name })}>
                   <Icon name="send" size={14} />
-                  Send
+                  {tr('Send')}
                 </button>
                 <button type="button" className="btn tiny" onClick={() => openModal('request', { from: c.name })}>
-                  Request
+                  {tr('Request')}
                 </button>
                 <button
                   type="button"
                   className="icon-btn soft sm"
-                  aria-label={`Message ${c.name}`}
-                  onClick={() => (chat ? go('messages', { chat: c.id }) : toast('No chat yet', `Send ${c.name.split(' ')[0]} money to start a conversation.`, { icon: 'chat' }))}
+                  aria-label={tr(`Message ${c.name}`)}
+                  onClick={() => (chat ? go('messages', { chat: c.id }) : toast(tr('No chat yet'), tr(`Send ${c.name.split(' ')[0]} money to start a conversation.`), { icon: 'chat' }))}
                 >
                   <Icon name="chat" size={16} />
                 </button>
@@ -195,7 +198,7 @@ export default function Contacts() {
         })}
       </div>
 
-      <Modal open={adding} onClose={() => setAdding(false)} title="Add contact" sub="Save someone you pay often.">
+      <Modal open={adding} onClose={() => setAdding(false)} title={tr('Add contact')} sub={tr('Save someone you pay often.')}>
         {adding ? (
           <AddContact
             onAdd={(f) => {
@@ -206,7 +209,7 @@ export default function Contacts() {
               ])
               setPickId(id)
               setAdding(false)
-              toast('Contact saved', `${f.name.trim()} was added to favourites.`, { icon: 'users' })
+              toast(tr('Contact saved'), tr(`${f.name.trim()} was added to favourites.`), { icon: 'users' })
             }}
           />
         ) : null}

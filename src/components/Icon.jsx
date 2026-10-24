@@ -1,3 +1,5 @@
+import { useTr } from '../lib/i18n'
+
 /* Line icons on a 24px grid, drawn to sit with the reference design's
    rounded 1.6px stroke style. */
 const PATHS = {
@@ -92,6 +94,7 @@ const PATHS = {
 }
 
 export default function Icon({ name, size = 22, stroke = 1.6, className, style, title }) {
+  const tr = useTr()
   const d = PATHS[name]
   return (
     <svg
@@ -107,7 +110,7 @@ export default function Icon({ name, size = 22, stroke = 1.6, className, style, 
       strokeLinejoin="round"
       role={title ? 'img' : undefined}
       aria-hidden={title ? undefined : true}
-      aria-label={title}
+      aria-label={tr(title)}
     >
       {d ? <path d={d} /> : null}
     </svg>

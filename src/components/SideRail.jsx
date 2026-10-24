@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from 'react'
 import Icon from './Icon'
 import { useApp } from '../lib/store'
+import { useTr } from '../lib/i18n'
 
 const RAIL = [
   { id: 'overview', icon: 'category', label: 'Dashboard' },
@@ -44,13 +45,14 @@ function useIndicator(selector) {
 }
 
 export default function SideRail() {
+  const tr = useTr()
   const { view, go, theme, switchTheme, openModal } = useApp()
   const [themeGroup, themeInd] = useIndicator(`[data-mode="${theme}"]`)
   const [navGroup, navInd] = useIndicator(`[data-rail="${view}"]`)
   const [footGroup, footInd] = useIndicator(`[data-rail="${view}"]`)
 
   return (
-    <aside className="rail" aria-label="Sections">
+    <aside className="rail" aria-label={tr('Sections')}>
       <div className="rail-group theme-group" ref={themeGroup}>
         <span className="rail-ind soft" ref={themeInd} />
         {[
@@ -64,8 +66,8 @@ export default function SideRail() {
             className={`rail-btn ${theme === m.mode ? 'on' : ''}`}
             style={{ '--i': i }}
             aria-pressed={theme === m.mode}
-            aria-label={m.label}
-            data-tip={m.label}
+            aria-label={tr(m.label)}
+            data-tip={tr(m.label)}
             onClick={(e) => switchTheme(m.mode, centre(e.currentTarget))}
           >
             <Icon name={m.icon} size={22} className={m.mode === 'light' ? 'sun-ic' : 'moon-ic'} />
@@ -80,10 +82,10 @@ export default function SideRail() {
             key={r.id}
             type="button"
             data-rail={r.id}
-            data-tip={r.label}
+            data-tip={tr(r.label)}
             className={`rail-btn ${view === r.id ? 'on' : ''}`}
             style={{ '--i': i + 2 }}
-            aria-label={r.label}
+            aria-label={tr(r.label)}
             aria-current={view === r.id ? 'page' : undefined}
             onClick={() => go(r.id)}
           >
@@ -97,20 +99,20 @@ export default function SideRail() {
         <button
           type="button"
           data-rail="help"
-          data-tip="Help Center"
+          data-tip={tr('Help Center')}
           className={`rail-btn ${view === 'help' ? 'on' : ''}`}
           style={{ '--i': 10 }}
-          aria-label="Help Center"
+          aria-label={tr('Help Center')}
           onClick={() => go('help')}
         >
           <Icon name="help" size={22} />
         </button>
         <button
           type="button"
-          data-tip="Log out"
+          data-tip={tr('Log out')}
           className="rail-btn"
           style={{ '--i': 11 }}
-          aria-label="Log out"
+          aria-label={tr('Log out')}
           onClick={() => openModal('logout')}
         >
           <Icon name="logout" size={22} />

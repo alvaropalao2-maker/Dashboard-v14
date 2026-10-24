@@ -5,6 +5,7 @@ import { Kpi, PageHead, Segmented } from '../components/ui'
 import { useApp } from '../lib/store'
 import { saveFile, toCsv } from '../lib/csv'
 import { REPORTS, STATEMENTS } from '../data/seed'
+import { useTr } from '../lib/i18n'
 
 const PALETTE = ['var(--accent)', 'var(--loss)', '#f5b400', '#3f74f6', '#22a05a']
 const PERIODS = [
@@ -16,6 +17,7 @@ const PERIODS = [
 const k = (n) => `$${n.toLocaleString('en-US', { maximumFractionDigits: 1 })}k`
 
 export default function Reports() {
+  const tr = useTr()
   const { activities, toast, booting } = useApp()
   const [period, setPeriod] = useState('month')
   const [slice, setSlice] = useState(null)
@@ -29,43 +31,43 @@ export default function Reports() {
 
   return (
     <>
-      <PageHead title="Reports" sub="See where your money comes from — and where it goes.">
+      <PageHead title={tr('Reports')} sub={tr('See where your money comes from — and where it goes.')}>
         <Segmented items={PERIODS} value={period} onChange={setPeriod} />
         <button
           type="button"
           className="btn solid lg"
           onClick={() => {
             saveFile('polplab-transactions.csv', toCsv(activities), 'text/csv')
-            toast('Export ready', `${activities.length} transactions saved as CSV.`, { icon: 'download' })
+            toast(tr('Export ready'), tr(`${activities.length} transactions saved as CSV.`), { icon: 'download' })
           }}
         >
           <Icon name="download" size={18} />
-          Export CSV
+          {tr('Export CSV')}
         </button>
       </PageHead>
 
       <div className="kpis" key={period}>
-        <Kpi icon="arrowDown" label="Income" value={income} format={k} delta={8} note="vs last period" delay={lead} tone="green" />
-        <Kpi icon="arrowUpRight" label="Expenses" value={expense} format={k} delta={-3} note="vs last period" d={70} delay={lead} tone="accent" />
-        <Kpi icon="trend" label="Net profit" value={net} format={k} delta={14} note="vs last period" d={140} delay={lead} />
-        <Kpi icon="pie" label="Savings rate" value={(net / income) * 100} format={(n) => `${n.toFixed(1)}%`} note="of income kept" d={210} delay={lead} tone="blue" />
+        <Kpi icon="arrowDown" label={tr('Income')} value={income} format={k} delta={8} note={tr('vs last period')} delay={lead} tone="green" />
+        <Kpi icon="arrowUpRight" label={tr('Expenses')} value={expense} format={k} delta={-3} note={tr('vs last period')} d={70} delay={lead} tone="accent" />
+        <Kpi icon="trend" label={tr('Net profit')} value={net} format={k} delta={14} note={tr('vs last period')} d={140} delay={lead} />
+        <Kpi icon="pie" label={tr('Savings rate')} value={(net / income) * 100} format={(n) => `${n.toFixed(1)}%`} note={tr('of income kept')} d={210} delay={lead} tone="blue" />
       </div>
 
       <div className="reports-grid">
         <section className="card chart-card" style={{ '--d': '200ms' }}>
           <div className="section-head rv" style={{ '--i': 0 }}>
             <div>
-              <h2 className="card-title big">Income vs expenses</h2>
-              <p className="card-sub">Hover the chart to compare any point.</p>
+              <h2 className="card-title big">{tr('Income vs expenses')}</h2>
+              <p className="card-sub">{tr('Hover the chart to compare any point.')}</p>
             </div>
             <div className="legend static">
               <span>
                 <i className="sw" style={{ background: 'var(--accent)' }} />
-                Income
+                {tr('Income')}
               </span>
               <span>
                 <i className="sw" style={{ background: 'var(--loss)' }} />
-                Expenses
+                {tr('Expenses')}
               </span>
             </div>
           </div>
@@ -83,13 +85,13 @@ export default function Reports() {
 
         <section className="card donut-card" style={{ '--d': '280ms' }}>
           <div className="section-head rv" style={{ '--i': 0 }}>
-            <h2 className="card-title big">Spending by category</h2>
+            <h2 className="card-title big">{tr('Spending by category')}</h2>
           </div>
           <div className="donut-wrap rv" style={{ '--i': 1 }} key={period}>
             <Donut data={data.categories} colors={PALETTE} active={slice} onActive={setSlice}>
-              <small>{focus ? focus.name : 'Total spent'}</small>
+              <small>{focus ? tr(focus.name) : tr('Total spent')}</small>
               <strong>{k(focus ? focus.v : catTotal)}</strong>
-              <em>{focus ? `${((focus.v / catTotal) * 100).toFixed(1)}%` : PERIODS.find((p) => p.key === period).label}</em>
+              <em>{focus ? `${((focus.v / catTotal) * 100).toFixed(1)}%` : tr(PERIODS.find((p) => p.key === period).label)}</em>
             </Donut>
           </div>
           <ul className="cat-list">
@@ -102,7 +104,7 @@ export default function Reports() {
                 onMouseLeave={() => setSlice(null)}
               >
                 <i className="sw" style={{ background: PALETTE[i] }} />
-                <span>{c.name}</span>
+                <span>{tr(c.name)}</span>
                 <div className="cat-bar">
                   <span style={{ width: `${(c.v / data.categories[0].v) * 100}%`, background: PALETTE[i] }} />
                 </div>
@@ -114,8 +116,8 @@ export default function Reports() {
 
         <section className="card statements-card" style={{ '--d': '340ms' }}>
           <div className="section-head rv" style={{ '--i': 0 }}>
-            <h2 className="card-title big">Statements</h2>
-            <span className="muted">PDF-ready text exports</span>
+            <h2 className="card-title big">{tr('Statements')}</h2>
+            <span className="muted">{tr('PDF-ready text exports')}</span>
           </div>
           <div className="statement-list">
             {STATEMENTS.map((s, i) => (
@@ -124,16 +126,16 @@ export default function Reports() {
                   <Icon name="note" size={20} />
                 </span>
                 <span className="control-txt">
-                  <strong>{s.name}</strong>
-                  <small>{s.meta}</small>
+                  <strong>{tr(s.name)}</strong>
+                  <small>{tr(s.meta)}</small>
                 </span>
                 <button
                   type="button"
                   className="icon-btn soft"
-                  aria-label={`Download ${s.name}`}
+                  aria-label={tr(`Download ${s.name}`)}
                   onClick={() => {
-                    saveFile(`${s.name.toLowerCase().replace(/\s+/g, '-')}.txt`, `POLPLAB — ${s.name}\n${s.meta}\n\nIncome: ${k(income)}\nExpenses: ${k(expense)}\nNet: ${k(net)}\n`)
-                    toast('Statement downloaded', s.name, { icon: 'download' })
+                    saveFile(`${s.name.toLowerCase().replace(/\s+/g, '-')}.txt`, `POLPLAB — ${tr(s.name)}\n${tr(s.meta)}\n\n${tr('Income')}: ${k(income)}\n${tr('Expenses')}: ${k(expense)}\n${tr('Net')}: ${k(net)}\n`)
+                    toast(tr('Statement downloaded'), tr(s.name), { icon: 'download' })
                   }}
                 >
                   <Icon name="download" size={18} />

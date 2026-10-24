@@ -26,6 +26,7 @@ import { AppContext } from './lib/store'
 import { liquidSwitch } from './lib/themeTransition'
 import { localIso, money, uid } from './lib/format'
 import * as seed from './data/seed'
+import { LangContext, translate } from './lib/i18n'
 
 const VIEWS = [
   { id: 'overview', label: 'Overview', rail: 'Dashboard', icon: 'category', page: Overview },
@@ -154,7 +155,7 @@ export default function App() {
   const [sessions, setSessions] = useState(seed.SESSIONS)
   const [security, setSecurity] = useState({ twoFactor: true, biometric: true, alerts: true })
   const [prefs, setPrefs] = useState({
-    language: 'English (US)',
+    language: stored('polplab-lang', 'English (US)'),
     timezone: 'America/Lima (GMT-5)',
     dateFormat: '17 Apr, 2026',
     weekStart: 'Monday',
@@ -169,6 +170,14 @@ export default function App() {
       smsLarge: false,
     },
   })
+
+  /* ---------- language ---------- */
+  const lang = prefs.language === 'Español' ? 'es' : 'en'
+  const tr = useCallback((text, vars) => translate(lang, text, vars), [lang])
+  useLayoutEffect(() => {
+    document.documentElement.lang = lang
+    store('polplab-lang', prefs.language)
+  }, [lang, prefs.language])
 
   /* ---------- toasts ---------- */
   const [toasts, setToasts] = useState([])
@@ -227,17 +236,17 @@ export default function App() {
         { id: uid(), icon: 'arrowUpRight', tone: 'accent', title: `You sent ${money(amount)}`, body: `To ${to}`, time: 'Just now', unread: true },
         ...n,
       ])
-      toast('Transfer sent', `${money(amount)} is on its way to ${to}.`, { icon: 'send' })
+      toast(tr('Transfer sent'), tr('{amount} is on its way to {to}.', { amount: money(amount), to }), { icon: 'send' })
     },
-    [addActivity, toast],
+    [addActivity, toast, tr],
   )
 
   const requestMoney = useCallback(
     ({ from, amount, note }) => {
       addActivity({ title: `Request from ${from}`, logo: 'request', price: amount, status: 'Pending', dir: 'in', note })
-      toast('Request sent', `${from} will get a request for ${money(amount)}.`, { icon: 'arrowDown' })
+      toast(tr('Request sent'), tr('{from} will get a request for {amount}.', { from, amount: money(amount) }), { icon: 'arrowDown' })
     },
-    [addActivity, toast],
+    [addActivity, toast, tr],
   )
 
   const updateActivity = useCallback(
@@ -250,11 +259,13 @@ export default function App() {
     (id, status) => {
       setWallets((w) => w.map((x) => (x.id === id ? { ...x, status } : x)))
       const w = wallets.find((x) => x.id === id)
-      toast(`${w?.code} wallet ${status === 'active' ? 'activated' : 'deactivated'}`, status === 'active' ? 'You can send and receive in this currency again.' : 'Incoming payments will be held until you reactivate it.', {
-        icon: status === 'active' ? 'check' : 'lock',
-      })
+      toast(
+        tr(status === 'active' ? '{code} wallet activated' : '{code} wallet deactivated', { code: w?.code }),
+        tr(status === 'active' ? 'You can send and receive in this currency again.' : 'Incoming payments will be held until you reactivate it.'),
+        { icon: status === 'active' ? 'check' : 'lock' },
+      )
     },
-    [wallets, toast],
+    [wallets, toast, tr],
   )
 
   const signOut = useCallback(() => {
@@ -348,37 +359,41 @@ export default function App() {
 
   if (signedOut) {
     return (
-      <div className="signed-out">
-        <div className="so-card">
-          <Logo size={56} />
-          <h2>You’re signed out</h2>
-          <p>Thanks for stopping by, {user.first}. Your session ended safely and your data stays encrypted.</p>
-          <button type="button" className="btn solid lg" onClick={signIn}>
-            Sign back in
-          </button>
+      <LangContext.Provider value={lang}>
+        <div className="signed-out">
+          <div className="so-card">
+            <Logo size={56} />
+            <h2>{tr('You’re signed out')}</h2>
+            <p>{tr('Thanks for stopping by, {name}. Your session ended safely and your data stays encrypted.', { name: user.first })}</p>
+            <button type="button" className="btn solid lg" onClick={signIn}>
+              {tr('Sign back in')}
+            </button>
+          </div>
         </div>
-      </div>
+      </LangContext.Provider>
     )
   }
 
   return (
-    <AppContext.Provider value={ctx}>
-      <div className={`shell ${booting ? 'booting' : ''}`} key={bootKey}>
-        <TopBar />
-        <div className="frame">
-          <SideRail />
-          <Main key={view} page={page} booting={booting} />
+    <LangContext.Provider value={lang}>
+      <AppContext.Provider value={ctx}>
+        <div className={`shell ${booting ? 'booting' : ''}`} key={bootKey}>
+          <TopBar />
+          <div className="frame">
+            <SideRail />
+            <Main key={view} page={page} booting={booting} />
+          </div>
+          <footer className="legal">{tr('© {year} Polplab. All rights reserved.', { year: new Date().getFullYear() })}</footer>
         </div>
-        <footer className="legal">© {new Date().getFullYear()} Polplab. All rights reserved.</footer>
-      </div>
 
-      <TransferModal open={modal?.type === 'transfer'} payload={modal?.payload} onClose={closeModal} />
-      <RequestModal open={modal?.type === 'request'} payload={modal?.payload} onClose={closeModal} />
-      <AddCardModal open={modal?.type === 'addCard'} onClose={closeModal} />
-      <ActivityModal open={modal?.type === 'activity'} payload={modal?.payload} onClose={closeModal} />
-      <LogoutModal open={modal?.type === 'logout'} onClose={closeModal} />
-      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} views={VIEWS} />
-      <Toasts items={toasts} onDismiss={dismiss} />
-    </AppContext.Provider>
+        <TransferModal open={modal?.type === 'transfer'} payload={modal?.payload} onClose={closeModal} />
+        <RequestModal open={modal?.type === 'request'} payload={modal?.payload} onClose={closeModal} />
+        <AddCardModal open={modal?.type === 'addCard'} onClose={closeModal} />
+        <ActivityModal open={modal?.type === 'activity'} payload={modal?.payload} onClose={closeModal} />
+        <LogoutModal open={modal?.type === 'logout'} onClose={closeModal} />
+        <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} views={VIEWS} />
+        <Toasts items={toasts} onDismiss={dismiss} />
+      </AppContext.Provider>
+    </LangContext.Provider>
   )
 }

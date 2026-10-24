@@ -5,8 +5,10 @@ import { PageHead, Segmented } from '../components/ui'
 import { useApp } from '../lib/store'
 import { clock } from '../lib/format'
 import { AUTO_REPLIES } from '../data/seed'
+import { useTr } from '../lib/i18n'
 
 export default function Messages() {
+  const tr = useTr()
   const { conversations, setConversations, params } = useApp()
   const [activeId, setActiveId] = useState(params.chat ?? conversations[0].id)
   const [filter, setFilter] = useState('All')
@@ -59,14 +61,14 @@ export default function Messages() {
 
   return (
     <>
-      <PageHead title="Messages" sub="Talk to your bank, your team and the people you pay." />
+      <PageHead title={tr('Messages')} sub={tr('Talk to your bank, your team and the people you pay.')} />
 
       <section className="card messenger" style={{ '--d': '0ms' }}>
         <aside className="convo-pane">
           <div className="convo-tools rv" style={{ '--i': 0 }}>
             <label className="search-box">
               <Icon name="search" size={18} />
-              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search chats" aria-label="Search chats" />
+              <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={tr('Search chats')} aria-label={tr('Search chats')} />
             </label>
             <Segmented items={['All', 'Unread']} value={filter} onChange={setFilter} size="sm" />
           </div>
@@ -80,19 +82,19 @@ export default function Messages() {
                     {c.online ? <i className="online" /> : null}
                   </span>
                   <span className="convo-txt">
-                    <strong>{c.name}</strong>
+                    <strong>{tr(c.name)}</strong>
                     <small>
-                      {typing === c.id ? <em className="typing-txt">typing…</em> : `${last.from === 'me' ? 'You: ' : ''}${last.text}`}
+                      {typing === c.id ? <em className="typing-txt">{tr('typing…')}</em> : `${last.from === 'me' ? `${tr('You')}: ` : ''}${tr(last.text)}`}
                     </small>
                   </span>
                   <span className="convo-meta">
-                    <small>{last.time}</small>
+                    <small>{tr(last.time)}</small>
                     {c.unread && c.id !== active.id ? <b>{c.unread}</b> : null}
                   </span>
                 </button>
               )
             })}
-            {list.length === 0 ? <p className="convo-empty">No chats here.</p> : null}
+            {list.length === 0 ? <p className="convo-empty">{tr('No chats here.')}</p> : null}
           </div>
         </aside>
 
@@ -100,23 +102,23 @@ export default function Messages() {
           <header className="thread-head">
             <Persona name={active.name} hue={active.hue} brand={active.brand} size={42} />
             <div>
-              <strong>{active.name}</strong>
-              <small className={active.online ? 'on' : ''}>{typing === active.id ? 'typing…' : active.online ? 'Online' : 'Last seen recently'}</small>
+              <strong>{tr(active.name)}</strong>
+              <small className={active.online ? 'on' : ''}>{typing === active.id ? tr('typing…') : active.online ? tr('Online') : tr('Last seen recently')}</small>
             </div>
-            <button type="button" className="icon-btn soft" aria-label="Call">
+            <button type="button" className="icon-btn soft" aria-label={tr('Call')}>
               <Icon name="phone" size={18} />
             </button>
-            <button type="button" className="icon-btn soft" aria-label="More">
+            <button type="button" className="icon-btn soft" aria-label={tr('More')}>
               <Icon name="dotsV" size={18} stroke={2.6} />
             </button>
           </header>
 
           <div className="thread" ref={thread}>
-            <span className="day-divider">Today</span>
+            <span className="day-divider">{tr('Today')}</span>
             {active.messages.map((m, i) => (
               <div key={`${i}-${m.time}`} className={`bubble ${m.from}`} style={{ '--i': i }}>
-                <p>{m.text}</p>
-                <small>{m.time}</small>
+                <p>{tr(m.text)}</p>
+                <small>{tr(m.time)}</small>
               </div>
             ))}
             {typing === active.id ? (
@@ -129,14 +131,14 @@ export default function Messages() {
           </div>
 
           <form className="composer" onSubmit={send}>
-            <button type="button" className="icon-btn" aria-label="Attach file">
+            <button type="button" className="icon-btn" aria-label={tr('Attach file')}>
               <Icon name="paperclip" size={19} />
             </button>
-            <input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder={`Message ${active.name}…`} aria-label="Message" />
-            <button type="button" className="icon-btn" aria-label="Emoji" onClick={() => setDraft((d) => `${d}🙂`)}>
+            <input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder={tr(`Message ${active.name}…`)} aria-label={tr('Message')} />
+            <button type="button" className="icon-btn" aria-label={tr('Emoji')} onClick={() => setDraft((d) => `${d}🙂`)}>
               <Icon name="smile" size={19} />
             </button>
-            <button type="submit" className="send-btn" disabled={!draft.trim()} aria-label="Send">
+            <button type="submit" className="send-btn" disabled={!draft.trim()} aria-label={tr('Send')}>
               <Icon name="send" size={18} />
             </button>
           </form>

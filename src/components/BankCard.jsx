@@ -1,10 +1,12 @@
 import Icon from './Icon'
 import { Mastercard } from './Brand'
+import { useTr } from '../lib/i18n'
 
 const mask = (num) => `**** **** ${num.slice(-4)}`
 
 /** A payment card. `flipped` turns it over to show the CVV strip. */
 export default function BankCard({ card, flipped = false, reveal = false, big = false, onClick, style }) {
+  const tr = useTr()
   const frozen = card.frozen
   return (
     <div
@@ -35,22 +37,22 @@ export default function BankCard({ card, flipped = false, reveal = false, big = 
           </div>
           <div className="bc-top">
             <Icon name="contactless" size={big ? 22 : 18} stroke={1.8} />
-            <span className="bc-pill">{frozen ? 'Frozen' : card.status}</span>
+            <span className="bc-pill">{frozen ? tr('Frozen') : tr(card.status)}</span>
             <span className="bc-brand">
               <Mastercard size={big ? 44 : 34} />
             </span>
           </div>
           <div className="bc-bottom">
             <div>
-              <small>Card Number</small>
+              <small>{tr('Card Number')}</small>
               <strong>{reveal ? card.number : mask(card.number)}</strong>
             </div>
             <div>
-              <small>EXP</small>
+              <small>{tr('EXP')}</small>
               <strong>{card.exp}</strong>
             </div>
             <div>
-              <small>CVV</small>
+              <small>{tr('CVV')}</small>
               <strong>{card.cvv}</strong>
             </div>
           </div>
@@ -66,7 +68,7 @@ export default function BankCard({ card, flipped = false, reveal = false, big = 
             <span>{card.holder}</span>
             <b>{card.cvv}</b>
           </div>
-          <p>This card is issued by Polplab. Use is subject to the cardholder agreement. If found, return to any Polplab partner.</p>
+          <p>{tr('This card is issued by Polplab. Use is subject to the cardholder agreement. If found, return to any Polplab partner.')}</p>
         </div>
       </div>
     </div>

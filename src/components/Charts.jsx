@@ -1,7 +1,9 @@
 import { useState } from 'react'
+import { useTr } from '../lib/i18n'
 
 /* ---------------- Profit & Loss stacked bars (Total Income card) ---------------- */
 export function PnlChart({ data, max = 50 }) {
+  const tr = useTr()
   const [hover, setHover] = useState(null)
   const [show, setShow] = useState({ profit: true, loss: true })
   const ticks = [50, 40, 30, 20, 10, 0]
@@ -15,15 +17,15 @@ export function PnlChart({ data, max = 50 }) {
   return (
     <div className="pnl">
       <div className="pnl-head rv" style={{ '--i': 2 }}>
-        <strong>Profit and Loss</strong>
+        <strong>{tr('Profit and Loss')}</strong>
         <div className="legend">
           <button type="button" className={show.profit ? '' : 'off'} onClick={() => flip('profit')}>
             <i className="sw profit" />
-            Profit
+            {tr('Profit')}
           </button>
           <button type="button" className={show.loss ? '' : 'off'} onClick={() => flip('loss')}>
             <i className="sw loss" />
-            Loss
+            {tr('Loss')}
           </button>
         </div>
       </div>
@@ -50,14 +52,14 @@ export function PnlChart({ data, max = 50 }) {
               </div>
               {hover === i ? (
                 <div className="chart-tip" style={{ bottom: `calc(${((d.profit + d.loss) / max) * 100}% + 14px)` }}>
-                  <b>{d.m} 2026</b>
+                  <b>{tr(d.m)} 2026</b>
                   <span>
                     <i className="sw profit" />
-                    Profit <strong>${d.profit}k</strong>
+                    {tr('Profit')} <strong>${d.profit}k</strong>
                   </span>
                   <span>
                     <i className="sw loss" />
-                    Loss <strong>${d.loss}k</strong>
+                    {tr('Loss')} <strong>${d.loss}k</strong>
                   </span>
                 </div>
               ) : null}
@@ -69,7 +71,7 @@ export function PnlChart({ data, max = 50 }) {
         <span />
         {data.map((d, i) => (
           <em key={d.m} className={`rv ${hover === i ? 'hot' : ''}`} style={{ '--i': 4 + i * 0.3 }}>
-            {d.m}
+            {tr(d.m)}
           </em>
         ))}
       </div>
@@ -98,6 +100,7 @@ const niceMax = (v) => {
 }
 
 export function LineChart({ labels, series, height = 260, unit = 'k' }) {
+  const tr = useTr()
   const [hover, setHover] = useState(null)
   const W = 1000
   const H = height
@@ -173,11 +176,11 @@ export function LineChart({ labels, series, height = 260, unit = 'k' }) {
               className={`chart-tip lc-tip ${hover > n * 0.6 ? 'left' : ''}`}
               style={{ left: `${(hover / (n - 1)) * 100}%`, top: `${(Math.min(...lines.map((l) => y(l.values[hover]))) / H) * 100}%` }}
             >
-              <b>{labels[hover]}</b>
+              <b>{tr(labels[hover])}</b>
               {lines.map((l) => (
                 <span key={l.name}>
                   <i className="sw" style={{ background: l.color }} />
-                  {l.name}
+                  {tr(l.name)}
                   <strong>
                     ${l.values[hover]}
                     {unit}
@@ -191,7 +194,7 @@ export function LineChart({ labels, series, height = 260, unit = 'k' }) {
       <div className="lc-labels">
         {labels.map((lb, i) => (
           <span key={lb} className={hover === i ? 'hot' : ''}>
-            {lb}
+            {tr(lb)}
           </span>
         ))}
       </div>
@@ -240,6 +243,7 @@ export function Donut({ data, colors, size = 210, stroke = 28, active, onActive,
 
 /* ---------------- Mini bars ---------------- */
 export function MiniBars({ data, format = (v) => v }) {
+  const tr = useTr()
   const [hover, setHover] = useState(null)
   const max = Math.max(...data.map((d) => d.v))
   return (
@@ -248,7 +252,7 @@ export function MiniBars({ data, format = (v) => v }) {
         <div key={d.m} className={`mb-col ${i === data.length - 1 ? 'last' : ''}`} onMouseEnter={() => setHover(i)} style={{ '--i': i }}>
           {hover === i ? <span className="mb-tip">{format(d.v)}</span> : null}
           <span className="mb-bar" style={{ height: `${(d.v / max) * 100}%` }} />
-          <em>{d.m}</em>
+          <em>{tr(d.m)}</em>
         </div>
       ))}
     </div>

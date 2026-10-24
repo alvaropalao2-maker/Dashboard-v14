@@ -3,6 +3,7 @@ import Icon from '../components/Icon'
 import { Empty, PageHead } from '../components/ui'
 import { useApp } from '../lib/store'
 import { DAYS, MONTHS, isoDay, money, uid } from '../lib/format'
+import { useTr } from '../lib/i18n'
 
 /* The demo data lives in April 2026, so that is the calendar's "today". */
 const TODAY = '2026-04-17'
@@ -23,6 +24,7 @@ const monthCells = (y, m) => {
 }
 
 function ReminderForm({ day, onAdd }) {
+  const tr = useTr()
   const [title, setTitle] = useState('')
   const [time, setTime] = useState('09:00')
   const [amount, setAmount] = useState('')
@@ -39,27 +41,28 @@ function ReminderForm({ day, onAdd }) {
         setAmount('')
       }}
     >
-      <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Add a reminder or bill…" aria-label="Reminder title" />
+      <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={tr('Add a reminder or bill…')} aria-label={tr('Reminder title')} />
       <div className="rf-row">
-        <input className="input" type="time" value={time} onChange={(e) => setTime(e.target.value)} aria-label="Time" />
-        <input className="input" inputMode="decimal" value={amount} onChange={(e) => setAmount(e.target.value.replace(/[^\d.]/g, ''))} placeholder="$ amount" aria-label="Amount" />
+        <input className="input" type="time" value={time} onChange={(e) => setTime(e.target.value)} aria-label={tr('Time')} />
+        <input className="input" inputMode="decimal" value={amount} onChange={(e) => setAmount(e.target.value.replace(/[^\d.]/g, ''))} placeholder={tr('$ amount')} aria-label={tr('Amount')} />
       </div>
       <div className="rf-kinds">
         {Object.entries(KINDS).map(([key, v]) => (
           <button key={key} type="button" className={`kind-chip ${key} ${kind === key ? 'on' : ''}`} onClick={() => setKind(key)}>
-            {v.label}
+            {tr(v.label)}
           </button>
         ))}
       </div>
       <button type="submit" className="btn solid block lg" disabled={!title.trim()}>
         <Icon name="plus" size={17} />
-        Add to {new Date(day).getDate()} {MONTHS[new Date(day).getMonth()]}
+        {tr('Add to {date}', { date: `${new Date(day).getDate()} ${tr(MONTHS[new Date(day).getMonth()])}` })}
       </button>
     </form>
   )
 }
 
 export default function Schedule() {
+  const tr = useTr()
   const { events, setEvents, toast } = useApp()
   const [cursor, setCursor] = useState({ y: 2026, m: 3 })
   const [dir, setDir] = useState(0)
@@ -89,17 +92,17 @@ export default function Schedule() {
 
   return (
     <>
-      <PageHead title="Schedule" sub="Bills, transfers and reminders laid out on one calendar." />
+      <PageHead title={tr('Schedule')} sub={tr('Bills, transfers and reminders laid out on one calendar.')} />
 
       <div className="schedule-grid">
         <section className="card calendar-card" style={{ '--d': '0ms' }}>
           <div className="cal-head rv" style={{ '--i': 0 }}>
             <div>
               <h2 className="card-title big">
-                {MONTHS[cursor.m]} {cursor.y}
+                {tr(MONTHS[cursor.m])} {cursor.y}
               </h2>
               <p className="card-sub">
-                Net scheduled: <b className={monthTotal >= 0 ? 'pos' : 'neg'}>{money(monthTotal)}</b>
+                {tr('Net scheduled:')} <b className={monthTotal >= 0 ? 'pos' : 'neg'}>{money(monthTotal)}</b>
               </p>
             </div>
             <div className="cal-nav">
@@ -112,12 +115,12 @@ export default function Schedule() {
                   setSel(TODAY)
                 }}
               >
-                Today
+                {tr('Today')}
               </button>
-              <button type="button" className="icon-btn soft" onClick={() => shift(-1)} aria-label="Previous month">
+              <button type="button" className="icon-btn soft" onClick={() => shift(-1)} aria-label={tr('Previous month')}>
                 <Icon name="chevLeft" size={18} />
               </button>
-              <button type="button" className="icon-btn soft" onClick={() => shift(1)} aria-label="Next month">
+              <button type="button" className="icon-btn soft" onClick={() => shift(1)} aria-label={tr('Next month')}>
                 <Icon name="chevRight" size={18} />
               </button>
             </div>
@@ -125,7 +128,7 @@ export default function Schedule() {
 
           <div className="cal-week rv" style={{ '--i': 1 }}>
             {WEEK.map((d) => (
-              <span key={d}>{d}</span>
+              <span key={d}>{tr(d)}</span>
             ))}
           </div>
 
@@ -146,10 +149,10 @@ export default function Schedule() {
                   <span className="cal-evs">
                     {evs.slice(0, 2).map((e) => (
                       <i key={e.id} className={`cal-ev ${e.kind}`}>
-                        {e.title}
+                        {tr(e.title)}
                       </i>
                     ))}
-                    {evs.length > 2 ? <em>+{evs.length - 2} more</em> : null}
+                    {evs.length > 2 ? <em>{tr('+{n} more', { n: evs.length - 2 })}</em> : null}
                   </span>
                   <span className="cal-dots">
                     {evs.slice(0, 3).map((e) => (
@@ -167,35 +170,35 @@ export default function Schedule() {
             <div className="section-head rv" style={{ '--i': 0 }}>
               <div>
                 <h2 className="card-title big">
-                  {DAYS[selDate.getDay()]}, {selDate.getDate()} {MONTHS[selDate.getMonth()]}
+                  {tr(DAYS[selDate.getDay()])}, {selDate.getDate()} {tr(MONTHS[selDate.getMonth()])}
                 </h2>
                 <p className="card-sub">
-                  {dayEvents.length ? `${dayEvents.length} item${dayEvents.length > 1 ? 's' : ''} scheduled` : 'Nothing scheduled yet'}
+                  {dayEvents.length ? tr(dayEvents.length === 1 ? '{n} item scheduled' : '{n} items scheduled', { n: dayEvents.length }) : tr('Nothing scheduled yet')}
                 </p>
               </div>
-              {sel === TODAY ? <span className="pill-tag accent">Today</span> : null}
+              {sel === TODAY ? <span className="pill-tag accent">{tr('Today')}</span> : null}
             </div>
             <div className="day-list" key={sel}>
-              {dayEvents.length === 0 ? <Empty icon="calendar" title="A free day" body="Add a bill or reminder below." /> : null}
+              {dayEvents.length === 0 ? <Empty icon="calendar" title={tr('A free day')} body={tr('Add a bill or reminder below.')} /> : null}
               {dayEvents.map((e, i) => (
                 <div key={e.id} className={`day-ev ${e.kind}`} style={{ '--i': i }}>
                   <span className="day-ic">
                     <Icon name={KINDS[e.kind].icon} size={17} />
                   </span>
                   <span className="control-txt">
-                    <strong>{e.title}</strong>
+                    <strong>{tr(e.title)}</strong>
                     <small>
-                      {e.time} · {KINDS[e.kind].label}
+                      {tr(e.time)} · {tr(KINDS[e.kind].label)}
                     </small>
                   </span>
                   {e.amount != null ? <b className={e.amount > 0 ? 'pos' : ''}>{money(e.amount)}</b> : null}
                   <button
                     type="button"
                     className="day-x"
-                    aria-label={`Remove ${e.title}`}
+                    aria-label={tr(`Remove ${e.title}`)}
                     onClick={() => {
                       setEvents((list) => list.filter((x) => x.id !== e.id))
-                      toast('Removed from schedule', e.title, { icon: 'trash' })
+                      toast(tr('Removed from schedule'), tr(e.title), { icon: 'trash' })
                     }}
                   >
                     <Icon name="close" size={14} />
@@ -207,14 +210,14 @@ export default function Schedule() {
               day={sel}
               onAdd={(e) => {
                 setEvents((list) => [...list, e])
-                toast('Added to schedule', `${e.title} · ${e.time}`, { icon: 'calendar' })
+                toast(tr('Added to schedule'), `${e.title} · ${e.time}`, { icon: 'calendar' })
               }}
             />
           </section>
 
           <section className="card upcoming-card" style={{ '--d': '170ms' }}>
             <div className="section-head rv" style={{ '--i': 0 }}>
-              <h2 className="card-title">Coming up next</h2>
+              <h2 className="card-title">{tr('Coming up next')}</h2>
             </div>
             <ul className="upcoming">
               {upcoming.map((e, i) => {
@@ -231,12 +234,12 @@ export default function Schedule() {
                     >
                       <span className="up-date">
                         <b>{d.getDate()}</b>
-                        <small>{MONTHS[d.getMonth()]}</small>
+                        <small>{tr(MONTHS[d.getMonth()])}</small>
                       </span>
                       <span className="control-txt">
-                        <strong>{e.title}</strong>
+                        <strong>{tr(e.title)}</strong>
                         <small>
-                          {DAYS[d.getDay()]} · {e.time}
+                          {tr(DAYS[d.getDay()])} · {tr(e.time)}
                         </small>
                       </span>
                       {e.amount != null ? <b className={e.amount > 0 ? 'pos' : ''}>{money(e.amount, '$', 0)}</b> : null}

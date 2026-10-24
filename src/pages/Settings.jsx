@@ -3,6 +3,7 @@ import Icon from '../components/Icon'
 import { PageHead, Toggle } from '../components/ui'
 import { useApp } from '../lib/store'
 import { CURRENCIES } from '../data/seed'
+import { useTr } from '../lib/i18n'
 
 const TABS = [
   { id: 'general', icon: 'gear', label: 'General', body: 'Language, currency and region' },
@@ -35,6 +36,7 @@ const strength = (pw) => {
 }
 
 function PasswordForm({ toast }) {
+  const tr = useTr()
   const [cur, setCur] = useState('')
   const [pw, setPw] = useState('')
   const [show, setShow] = useState(false)
@@ -47,18 +49,18 @@ function PasswordForm({ toast }) {
         if (!cur || s < 3) return
         setCur('')
         setPw('')
-        toast('Password updated', 'Other devices will be asked to sign in again.', { icon: 'lock' })
+        toast(tr('Password updated'), tr('Other devices will be asked to sign in again.'), { icon: 'lock' })
       }}
     >
       <label className="field">
-        <span>Current password</span>
+        <span>{tr('Current password')}</span>
         <input type="password" value={cur} onChange={(e) => setCur(e.target.value)} autoComplete="current-password" />
       </label>
       <label className="field">
-        <span>New password</span>
+        <span>{tr('New password')}</span>
         <div className="pw-wrap">
           <input type={show ? 'text' : 'password'} value={pw} onChange={(e) => setPw(e.target.value)} autoComplete="new-password" />
-          <button type="button" onClick={() => setShow((v) => !v)} aria-label={show ? 'Hide password' : 'Show password'}>
+          <button type="button" onClick={() => setShow((v) => !v)} aria-label={show ? tr('Hide password') : tr('Show password')}>
             <Icon name={show ? 'eyeOff' : 'eye'} size={18} />
           </button>
         </div>
@@ -67,16 +69,17 @@ function PasswordForm({ toast }) {
             <i key={i} className={i < s ? 'on' : ''} />
           ))}
         </div>
-        <small>{['Too short', 'Weak', 'Okay', 'Strong', 'Very strong'][s]} — use 8+ characters with numbers and symbols.</small>
+        <small>{tr('{strength} — use 8+ characters with numbers and symbols.', { strength: tr(['Too short', 'Weak', 'Okay', 'Strong', 'Very strong'][s]) })}</small>
       </label>
       <button type="submit" className="btn solid lg" disabled={!cur || s < 3}>
-        Update password
+        {tr('Update password')}
       </button>
     </form>
   )
 }
 
 export default function Settings() {
+  const tr = useTr()
   const app = useApp()
   const { prefs, setPrefs, currency, setCurrency, theme, switchTheme, accent, setAccent, reduceMotion, setReduceMotion, security, setSecurity, sessions, setSessions, toast, replayIntro } = app
   const [tab, setTab] = useState('general')
@@ -96,7 +99,7 @@ export default function Settings() {
 
   return (
     <>
-      <PageHead title="Settings" sub="Make Polplab work the way you do." />
+      <PageHead title={tr('Settings')} sub={tr('Make Polplab work the way you do.')} />
 
       <div className="settings-grid">
         <section className="card settings-nav" style={{ '--d': '0ms' }}>
@@ -108,8 +111,8 @@ export default function Settings() {
                   <Icon name={t.icon} size={18} />
                 </span>
                 <span className="control-txt">
-                  <strong>{t.label}</strong>
-                  <small>{t.body}</small>
+                  <strong>{tr(t.label)}</strong>
+                  <small>{tr(t.body)}</small>
                 </span>
               </button>
             ))}
@@ -120,30 +123,30 @@ export default function Settings() {
           <div className="panel-body" key={tab}>
             {tab === 'general' ? (
               <>
-                <h2 className="card-title big">General</h2>
-                <p className="card-sub">These apply everywhere you use Polplab.</p>
+                <h2 className="card-title big">{tr('General')}</h2>
+                <p className="card-sub">{tr('These apply everywhere you use Polplab.')}</p>
                 <div className="settings-form">
                   <label className="field">
-                    <span>Language</span>
+                    <span>{tr('Language')}</span>
                     <select value={prefs.language} onChange={setPref('language')}>
-                      {['English (US)', 'English (UK)', 'বাংলা', 'हिन्दी', 'اردو', 'Deutsch'].map((l) => (
+                      {['English (US)', 'English (UK)', 'Español', 'বাংলা', 'हिन्दी', 'اردو', 'Deutsch'].map((l) => (
                         <option key={l}>{l}</option>
                       ))}
                     </select>
                   </label>
                   <label className="field">
-                    <span>Default currency</span>
+                    <span>{tr('Default currency')}</span>
                     <select value={currency} onChange={(e) => setCurrency(e.target.value)}>
                       {Object.values(CURRENCIES).map((c) => (
                         <option key={c.code} value={c.code}>
-                          {c.code} — {c.name}
+                          {c.code} — {tr(c.name)}
                         </option>
                       ))}
                     </select>
-                    <small>Your dashboard balance is shown in this currency.</small>
+                    <small>{tr('Your dashboard balance is shown in this currency.')}</small>
                   </label>
                   <label className="field">
-                    <span>Time zone</span>
+                    <span>{tr('Time zone')}</span>
                     <select value={prefs.timezone} onChange={setPref('timezone')}>
                       {['America/Lima (GMT-5)', 'Asia/Dubai (GMT+4)', 'Europe/London (GMT+1)', 'America/New_York (GMT-4)'].map((z) => (
                         <option key={z}>{z}</option>
@@ -151,17 +154,19 @@ export default function Settings() {
                     </select>
                   </label>
                   <label className="field">
-                    <span>Week starts on</span>
+                    <span>{tr('Week starts on')}</span>
                     <select value={prefs.weekStart} onChange={setPref('weekStart')}>
                       {['Monday', 'Sunday', 'Saturday'].map((d) => (
-                        <option key={d}>{d}</option>
+                        <option key={d} value={d}>
+                          {tr(d)}
+                        </option>
                       ))}
                     </select>
                   </label>
                 </div>
                 <div className="panel-foot">
-                  <button type="button" className="btn solid lg" onClick={() => toast('Settings saved', 'Your preferences are up to date.')}>
-                    Save changes
+                  <button type="button" className="btn solid lg" onClick={() => toast(tr('Settings saved'), tr('Your preferences are up to date.'))}>
+                    {tr('Save changes')}
                   </button>
                 </div>
               </>
@@ -169,17 +174,17 @@ export default function Settings() {
 
             {tab === 'notifications' ? (
               <>
-                <h2 className="card-title big">Notifications</h2>
-                <p className="card-sub">Pick what reaches you, and where.</p>
+                <h2 className="card-title big">{tr('Notifications')}</h2>
+                <p className="card-sub">{tr('Pick what reaches you, and where.')}</p>
                 {NOTIFY.map((g) => (
                   <div key={g.group} className="notify-group">
-                    <h3 className="sub-title">{g.group}</h3>
+                    <h3 className="sub-title">{tr(g.group)}</h3>
                     {g.items.map((it) => (
                       <div key={it.k} className="control">
                         <span className="control-txt">
-                          <strong>{it.l}</strong>
+                          <strong>{tr(it.l)}</strong>
                         </span>
-                        <Toggle on={prefs.notify[it.k]} label={`${g.group}: ${it.l}`} onChange={(v) => setNotify(it.k, v)} />
+                        <Toggle on={prefs.notify[it.k]} label={`${tr(g.group)}: ${tr(it.l)}`} onChange={(v) => setNotify(it.k, v)} />
                       </div>
                     ))}
                   </div>
@@ -189,28 +194,28 @@ export default function Settings() {
 
             {tab === 'security' ? (
               <>
-                <h2 className="card-title big">Security</h2>
-                <p className="card-sub">Keep your money locked down.</p>
+                <h2 className="card-title big">{tr('Security')}</h2>
+                <p className="card-sub">{tr('Keep your money locked down.')}</p>
                 <div className="control boxed">
                   <span className="control-ic">
                     <Icon name="key" size={19} />
                   </span>
                   <span className="control-txt">
-                    <strong>Two-factor authentication</strong>
-                    <small>{security.twoFactor ? 'On — codes go to +51 •••• 460' : 'Off — we strongly recommend turning this on'}</small>
+                    <strong>{tr('Two-factor authentication')}</strong>
+                    <small>{security.twoFactor ? tr('On — codes go to +51 •••• 460') : tr('Off — we strongly recommend turning this on')}</small>
                   </span>
-                  <Toggle on={security.twoFactor} label="Two-factor authentication" onChange={(v) => setSecurity((s) => ({ ...s, twoFactor: v }))} />
+                  <Toggle on={security.twoFactor} label={tr('Two-factor authentication')} onChange={(v) => setSecurity((s) => ({ ...s, twoFactor: v }))} />
                 </div>
-                <h3 className="sub-title">Change password</h3>
+                <h3 className="sub-title">{tr('Change password')}</h3>
                 <PasswordForm toast={toast} />
-                <h3 className="sub-title">Devices</h3>
+                <h3 className="sub-title">{tr('Devices')}</h3>
                 <div className="control boxed">
                   <span className="control-ic">
                     <Icon name="monitor" size={19} />
                   </span>
                   <span className="control-txt">
-                    <strong>{sessions.length} signed-in devices</strong>
-                    <small>Sign out everywhere except this MacBook.</small>
+                    <strong>{tr('{count} signed-in devices', { count: sessions.length })}</strong>
+                    <small>{tr('Sign out everywhere except this MacBook.')}</small>
                   </span>
                   <button
                     type="button"
@@ -218,10 +223,10 @@ export default function Settings() {
                     disabled={sessions.length <= 1}
                     onClick={() => {
                       setSessions((list) => list.filter((s) => s.current))
-                      toast('Signed out elsewhere', 'Only this device is still signed in.', { icon: 'logout' })
+                      toast(tr('Signed out elsewhere'), tr('Only this device is still signed in.'), { icon: 'logout' })
                     }}
                   >
-                    Sign out others
+                    {tr('Sign out others')}
                   </button>
                 </div>
               </>
@@ -229,9 +234,9 @@ export default function Settings() {
 
             {tab === 'appearance' ? (
               <>
-                <h2 className="card-title big">Appearance</h2>
-                <p className="card-sub">Switching theme pours the new look over the page.</p>
-                <h3 className="sub-title">Theme</h3>
+                <h2 className="card-title big">{tr('Appearance')}</h2>
+                <p className="card-sub">{tr('Switching theme pours the new look over the page.')}</p>
+                <h3 className="sub-title">{tr('Theme')}</h3>
                 <div className="theme-cards">
                   {['light', 'dark'].map((t) => (
                     <button
@@ -248,42 +253,42 @@ export default function Settings() {
                       </span>
                       <span className="tc-label">
                         <Icon name={t === 'light' ? 'sun' : 'moon'} size={16} />
-                        {t === 'light' ? 'Light' : 'Dark'}
+                        {t === 'light' ? tr('Light') : tr('Dark')}
                         {theme === t ? <Icon name="check" size={15} stroke={2.4} className="tc-check" /> : null}
                       </span>
                     </button>
                   ))}
                 </div>
-                <h3 className="sub-title">Accent colour</h3>
+                <h3 className="sub-title">{tr('Accent colour')}</h3>
                 <div className="accents">
                   {ACCENTS.map((a) => (
-                    <button key={a.id} type="button" className={`accent-dot ${accent === a.id ? 'on' : ''}`} style={{ '--c': a.color }} onClick={() => setAccent(a.id)} aria-label={`${a.id} accent`}>
+                    <button key={a.id} type="button" className={`accent-dot ${accent === a.id ? 'on' : ''}`} style={{ '--c': a.color }} onClick={() => setAccent(a.id)} aria-label={tr(`${a.id} accent`)}>
                       {accent === a.id ? <Icon name="check" size={16} stroke={2.6} /> : null}
                     </button>
                   ))}
                 </div>
-                <h3 className="sub-title">Motion</h3>
+                <h3 className="sub-title">{tr('Motion')}</h3>
                 <div className="control boxed">
                   <span className="control-ic">
                     <Icon name="sparkle" size={19} />
                   </span>
                   <span className="control-txt">
-                    <strong>Reduce motion</strong>
-                    <small>Turn off entrance and theme animations.</small>
+                    <strong>{tr('Reduce motion')}</strong>
+                    <small>{tr('Turn off entrance and theme animations.')}</small>
                   </span>
-                  <Toggle on={reduceMotion} label="Reduce motion" onChange={setReduceMotion} />
+                  <Toggle on={reduceMotion} label={tr('Reduce motion')} onChange={setReduceMotion} />
                 </div>
                 <div className="control boxed">
                   <span className="control-ic">
                     <Icon name="replay" size={19} />
                   </span>
                   <span className="control-txt">
-                    <strong>Intro animation</strong>
-                    <small>Play the first-visit dashboard reveal again.</small>
+                    <strong>{tr('Intro animation')}</strong>
+                    <small>{tr('Play the first-visit dashboard reveal again.')}</small>
                   </span>
                   <button type="button" className="btn tiny solid" onClick={replayIntro}>
                     <Icon name="play" size={13} />
-                    Replay
+                    {tr('Replay')}
                   </button>
                 </div>
               </>

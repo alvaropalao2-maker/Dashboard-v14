@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import Icon from './Icon'
+import { useTr } from '../lib/i18n'
 
 /* ---------------- CountUp ----------------
    Writes straight into the DOM on every frame so a counting number never
@@ -63,21 +64,23 @@ const STATUS_TONE = {
 }
 
 export function Status({ value, label }) {
+  const tr = useTr()
   return (
     <span className={`status ${STATUS_TONE[value] ?? 'muted'}`}>
       <i />
-      {label ?? value}
+      {tr(label ?? value)}
     </span>
   )
 }
 
 export function Checkbox({ checked, mixed = false, onChange, label }) {
+  const tr = useTr()
   return (
     <button
       type="button"
       role="checkbox"
       aria-checked={mixed ? 'mixed' : checked}
-      aria-label={label}
+      aria-label={tr(label)}
       className={`check ${checked ? 'on' : ''} ${mixed ? 'mixed' : ''}`}
       onClick={(e) => {
         e.stopPropagation()
@@ -92,12 +95,13 @@ export function Checkbox({ checked, mixed = false, onChange, label }) {
 }
 
 export function Toggle({ on, onChange, label }) {
+  const tr = useTr()
   return (
     <button
       type="button"
       role="switch"
       aria-checked={on}
-      aria-label={label}
+      aria-label={tr(label)}
       className={`toggle ${on ? 'on' : ''}`}
       onClick={(e) => {
         e.stopPropagation()
@@ -111,6 +115,7 @@ export function Toggle({ on, onChange, label }) {
 
 /* ---------------- Segmented control with a sliding thumb ---------------- */
 export function Segmented({ items, value, onChange, size = 'md' }) {
+  const tr = useTr()
   const wrap = useRef(null)
   const thumb = useRef(null)
 
@@ -143,7 +148,7 @@ export function Segmented({ items, value, onChange, size = 'md' }) {
             className={value === key ? 'on' : ''}
             onClick={() => onChange(key)}
           >
-            {label}
+            {tr(label)}
             {typeof it === 'object' && it.count != null ? <em>{it.count}</em> : null}
           </button>
         )
@@ -187,6 +192,7 @@ export function MenuItem({ icon, children, onClick, tone }) {
 
 /* ---------------- Modal ---------------- */
 export function Modal({ open, onClose, title, sub, width = 460, children, footer }) {
+  const tr = useTr()
   useEffect(() => {
     if (!open) return undefined
     const key = (e) => e.key === 'Escape' && onClose()
@@ -196,13 +202,13 @@ export function Modal({ open, onClose, title, sub, width = 460, children, footer
   if (!open) return null
   return (
     <div className="modal-veil" onPointerDown={(e) => e.target === e.currentTarget && onClose()}>
-      <div className="modal" style={{ width }} role="dialog" aria-modal="true" aria-label={title}>
+      <div className="modal" style={{ width }} role="dialog" aria-modal="true" aria-label={tr(title)}>
         <header className="modal-head">
           <div>
-            <h3>{title}</h3>
-            {sub ? <p>{sub}</p> : null}
+            <h3>{tr(title)}</h3>
+            {sub ? <p>{tr(sub)}</p> : null}
           </div>
-          <button type="button" className="icon-btn soft" onClick={onClose} aria-label="Close">
+          <button type="button" className="icon-btn soft" onClick={onClose} aria-label={tr('Close')}>
             <Icon name="close" size={18} />
           </button>
         </header>
@@ -244,11 +250,12 @@ export function Ring({ value, size = 96, stroke = 9, color = 'var(--accent)', tr
 
 /* ---------------- Page header ---------------- */
 export function PageHead({ title, sub, children }) {
+  const tr = useTr()
   const words = title.split(' ')
   return (
     <header className="page-head">
       <div>
-        <h1 aria-label={title}>
+        <h1 aria-label={tr(title)}>
           {words.map((w, i) => (
             <span key={`${w}-${i}`} className="word" style={{ '--i': i }} aria-hidden="true">
               {w}
@@ -257,7 +264,7 @@ export function PageHead({ title, sub, children }) {
           ))}
         </h1>
         <p className="rv" style={{ '--i': words.length }}>
-          {sub}
+          {tr(sub)}
         </p>
       </div>
       {children ? <div className="page-actions rv" style={{ '--i': words.length + 1 }}>{children}</div> : null}
@@ -267,38 +274,41 @@ export function PageHead({ title, sub, children }) {
 
 /** Small stat tile used across secondary pages. */
 export function Kpi({ icon, label, value, format, delta, note, tone = '', d = 0, delay = 300 }) {
+  const tr = useTr()
   return (
     <section className={`card kpi ${tone}`} style={{ '--d': `${d}ms` }}>
       <div className="kpi-head rv" style={{ '--i': 0 }}>
         <span className="kpi-ic">
           <Icon name={icon} size={18} />
         </span>
-        <span>{label}</span>
+        <span>{tr(label)}</span>
       </div>
       <strong className="kpi-val rv" style={{ '--i': 1 }}>
         <CountUp value={value} format={format} delay={delay + d} />
       </strong>
       <div className="kpi-foot rv" style={{ '--i': 2 }}>
         {delta != null ? <Delta value={delta} /> : null}
-        {note ? <span>{note}</span> : null}
+        {note ? <span>{tr(note)}</span> : null}
       </div>
     </section>
   )
 }
 
 export function Empty({ icon = 'search', title, body }) {
+  const tr = useTr()
   return (
     <div className="empty">
       <span>
         <Icon name={icon} size={22} />
       </span>
-      <strong>{title}</strong>
-      {body ? <p>{body}</p> : null}
+      <strong>{tr(title)}</strong>
+      {body ? <p>{tr(body)}</p> : null}
     </div>
   )
 }
 
 export function Toasts({ items, onDismiss }) {
+  const tr = useTr()
   return (
     <div className="toasts" aria-live="polite">
       {items.map((t) => (
@@ -307,10 +317,10 @@ export function Toasts({ items, onDismiss }) {
             <Icon name={t.icon ?? 'check'} size={16} stroke={2.2} />
           </span>
           <div>
-            <strong>{t.title}</strong>
-            {t.body ? <p>{t.body}</p> : null}
+            <strong>{tr(t.title)}</strong>
+            {t.body ? <p>{tr(t.body)}</p> : null}
           </div>
-          <button type="button" onClick={() => onDismiss(t.id)} aria-label="Dismiss">
+          <button type="button" onClick={() => onDismiss(t.id)} aria-label={tr('Dismiss')}>
             <Icon name="close" size={14} />
           </button>
         </div>

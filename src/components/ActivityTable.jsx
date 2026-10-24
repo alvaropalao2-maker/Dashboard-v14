@@ -5,6 +5,7 @@ import { Checkbox, Empty, MenuItem, Popover, Segmented, Status } from './ui'
 import { useApp } from '../lib/store'
 import { money, stamp } from '../lib/format'
 import { saveFile, toCsv } from '../lib/csv'
+import { useTr } from '../lib/i18n'
 
 const STATUSES = ['Completed', 'Pending', 'In Progress']
 
@@ -19,6 +20,7 @@ function SortHead({ full, sort, by, onSort, children }) {
 }
 
 function RowMenu({ row }) {
+  const tr = useTr()
   const { openModal, updateActivity, removeActivities, toast } = useApp()
   const [open, setOpen] = useState(false)
   return (
@@ -26,7 +28,7 @@ function RowMenu({ row }) {
       <button
         type="button"
         className={`row-dots ${open ? 'on' : ''}`}
-        aria-label="Row actions"
+        aria-label={tr('Row actions')}
         onClick={(e) => {
           e.stopPropagation()
           setOpen((o) => !o)
@@ -36,7 +38,7 @@ function RowMenu({ row }) {
       </button>
       <Popover open={open} onClose={() => setOpen(false)} className="row-pop">
         <MenuItem icon="eye" onClick={() => (setOpen(false), openModal('activity', { key: row.key }))}>
-          View details
+          {tr('View details')}
         </MenuItem>
         {row.status !== 'Completed' ? (
           <MenuItem
@@ -44,10 +46,10 @@ function RowMenu({ row }) {
             onClick={() => {
               setOpen(false)
               updateActivity([row.key], { status: 'Completed' })
-              toast('Marked as completed', row.title)
+              toast(tr('Marked as completed'), tr(row.title))
             }}
           >
-            Mark as completed
+            {tr('Mark as completed')}
           </MenuItem>
         ) : null}
         <MenuItem
@@ -56,10 +58,10 @@ function RowMenu({ row }) {
           onClick={() => {
             setOpen(false)
             removeActivities([row.key])
-            toast('Transaction removed', row.title, { icon: 'trash' })
+            toast(tr('Transaction removed'), tr(row.title), { icon: 'trash' })
           }}
         >
-          Delete
+          {tr('Delete')}
         </MenuItem>
       </Popover>
     </div>
@@ -67,6 +69,7 @@ function RowMenu({ row }) {
 }
 
 export default function ActivityTable({ variant = 'compact', initialSelected = [] }) {
+  const tr = useTr()
   const { activities, openModal, updateActivity, removeActivities, toast } = useApp()
   const full = variant === 'full'
   const [q, setQ] = useState('')
@@ -109,7 +112,7 @@ export default function ActivityTable({ variant = 'compact', initialSelected = [
 
   const exportCsv = () => {
     saveFile('polplab-activity.csv', toCsv(filtered), 'text/csv')
-    toast('Export ready', `${filtered.length} transactions saved as CSV.`, { icon: 'download' })
+    toast(tr('Export ready'), tr(`${filtered.length} transactions saved as CSV.`), { icon: 'download' })
   }
 
   return (
@@ -126,7 +129,7 @@ export default function ActivityTable({ variant = 'compact', initialSelected = [
           />
         ) : (
           <h2 className="card-title big rv" style={{ '--i': 0 }}>
-            Recent Activities
+            {tr('Recent Activities')}
           </h2>
         )}
         <div className="act-tools rv" style={{ '--i': 1 }}>
@@ -138,29 +141,29 @@ export default function ActivityTable({ variant = 'compact', initialSelected = [
                 setQ(e.target.value)
                 setPage(1)
               }}
-              placeholder="Search"
-              aria-label="Search activities"
+              placeholder={tr('Search')}
+              aria-label={tr('Search activities')}
             />
             {q ? (
-              <button type="button" onClick={() => setQ('')} aria-label="Clear search">
+              <button type="button" onClick={() => setQ('')} aria-label={tr('Clear search')}>
                 <Icon name="close" size={14} />
               </button>
             ) : null}
           </label>
           {full ? (
             <button type="button" className="ghost-btn" onClick={exportCsv}>
-              Export
+              {tr('Export')}
               <Icon name="download" size={18} />
             </button>
           ) : (
             <div className="anchor">
               <button type="button" className={`ghost-btn ${filterOpen ? 'on' : ''}`} onClick={() => setFilterOpen((o) => !o)}>
-                Filter
+                {tr('Filter')}
                 <Icon name="filter" size={19} />
                 {statuses.length < STATUSES.length ? <i className="filter-dot" /> : null}
               </button>
               <Popover open={filterOpen} onClose={() => setFilterOpen(false)} className="filter-pop">
-                <h6>Status</h6>
+                <h6>{tr('Status')}</h6>
                 {STATUSES.map((s) => (
                   <label key={s} className="filter-row">
                     <Checkbox
@@ -172,7 +175,7 @@ export default function ActivityTable({ variant = 'compact', initialSelected = [
                     <em>{counts[s]}</em>
                   </label>
                 ))}
-                <h6>Sort by</h6>
+                <h6>{tr('Sort by')}</h6>
                 <div className="filter-sorts">
                   {[
                     { by: null, label: 'Latest' },
@@ -180,7 +183,7 @@ export default function ActivityTable({ variant = 'compact', initialSelected = [
                     { by: 'date', label: 'Date' },
                   ].map((o) => (
                     <button key={o.label} type="button" className={`chip ${sort.by === o.by ? 'on' : ''}`} onClick={() => setSort({ by: o.by, dir: 'desc' })}>
-                      {o.label}
+                      {tr(o.label)}
                     </button>
                   ))}
                 </div>
@@ -192,7 +195,7 @@ export default function ActivityTable({ variant = 'compact', initialSelected = [
                     setSort({ by: null, dir: 'desc' })
                   }}
                 >
-                  Reset filters
+                  {tr('Reset filters')}
                 </button>
               </Popover>
             </div>
@@ -200,23 +203,23 @@ export default function ActivityTable({ variant = 'compact', initialSelected = [
         </div>
       </div>
 
-      <div className="table rv" style={{ '--i': 2 }} role="table" aria-label="Activities">
+      <div className="table rv" style={{ '--i': 2 }} role="table" aria-label={tr('Activities')}>
         <div className="tr th" role="row">
           <span role="columnheader">
-            <Checkbox checked={allOn} mixed={full && !allOn && someOn} onChange={toggleAll} label="Select all" />
+            <Checkbox checked={allOn} mixed={full && !allOn && someOn} onChange={toggleAll} label={tr('Select all')} />
           </span>
-          <span role="columnheader">Order ID</span>
-          <span role="columnheader">Activity</span>
+          <span role="columnheader">{tr('Order ID')}</span>
+          <span role="columnheader">{tr('Activity')}</span>
           <span role="columnheader">
-            <SortHead full={full} sort={sort} by="price" onSort={sortBy}>Price</SortHead>
+            <SortHead full={full} sort={sort} by="price" onSort={sortBy}>{tr('Price')}</SortHead>
           </span>
-          <span role="columnheader">Status</span>
+          <span role="columnheader">{tr('Status')}</span>
           <span role="columnheader">
-            <SortHead full={full} sort={sort} by="date" onSort={sortBy}>Date</SortHead>
+            <SortHead full={full} sort={sort} by="date" onSort={sortBy}>{tr('Date')}</SortHead>
           </span>
           <span role="columnheader" />
         </div>
-        {rows.length === 0 ? <Empty title="No activities found" body="Try a different search or filter." /> : null}
+        {rows.length === 0 ? <Empty title={tr('No activities found')} body={tr('Try a different search or filter.')} /> : null}
         {rows.map((r, i) => (
           <div
             key={r.key}
@@ -226,14 +229,14 @@ export default function ActivityTable({ variant = 'compact', initialSelected = [
             onClick={() => openModal('activity', { key: r.key })}
           >
             <span role="cell">
-              <Checkbox checked={live.includes(r.key)} onChange={() => toggle(r.key)} label={`Select ${r.id}`} />
+              <Checkbox checked={live.includes(r.key)} onChange={() => toggle(r.key)} label={tr(`Select ${r.id}`)} />
             </span>
             <span role="cell" className="mono">
               {r.id}
             </span>
             <span role="cell" className="act-cell">
               <ActivityLogo kind={r.logo} size={21} />
-              <span>{r.title}</span>
+              <span>{tr(r.title)}</span>
             </span>
             <span role="cell" className={r.dir === 'in' && full ? 'pos' : ''}>
               {full && r.dir === 'in' ? '+' : ''}
@@ -242,7 +245,7 @@ export default function ActivityTable({ variant = 'compact', initialSelected = [
             <span role="cell">
               <Status value={r.status} />
             </span>
-            <span role="cell">{stamp(r.date)}</span>
+            <span role="cell">{tr(stamp(r.date))}</span>
             <span role="cell" onClick={(e) => e.stopPropagation()}>
               <RowMenu row={r} />
             </span>
@@ -253,10 +256,14 @@ export default function ActivityTable({ variant = 'compact', initialSelected = [
       {full ? (
         <div className="table-foot">
           <span>
-            Showing {rows.length ? (current - 1) * pageSize + 1 : 0}–{(current - 1) * pageSize + rows.length} of {filtered.length}
+            {tr('Showing {from}–{to} of {total}', {
+              from: rows.length ? (current - 1) * pageSize + 1 : 0,
+              to: (current - 1) * pageSize + rows.length,
+              total: filtered.length,
+            })}
           </span>
           <div className="pager">
-            <button type="button" disabled={current === 1} onClick={() => setPage(current - 1)} aria-label="Previous page">
+            <button type="button" disabled={current === 1} onClick={() => setPage(current - 1)} aria-label={tr('Previous page')}>
               <Icon name="chevLeft" size={16} />
             </button>
             {Array.from({ length: pages }, (_, i) => i + 1).map((p) => (
@@ -264,7 +271,7 @@ export default function ActivityTable({ variant = 'compact', initialSelected = [
                 {p}
               </button>
             ))}
-            <button type="button" disabled={current === pages} onClick={() => setPage(current + 1)} aria-label="Next page">
+            <button type="button" disabled={current === pages} onClick={() => setPage(current + 1)} aria-label={tr('Next page')}>
               <Icon name="chevRight" size={16} />
             </button>
           </div>
@@ -272,31 +279,31 @@ export default function ActivityTable({ variant = 'compact', initialSelected = [
       ) : null}
 
       <div className={`bulk-bar ${full && live.length ? 'show' : ''}`} aria-hidden={!(full && live.length)}>
-        <strong>{live.length} selected</strong>
+        <strong>{tr('{count} selected', { count: live.length })}</strong>
         <button
           type="button"
           onClick={() => {
             updateActivity(live, { status: 'Completed' })
-            toast('Updated', `${live.length} transactions marked as completed.`)
+            toast(tr('Updated'), tr(`${live.length} transactions marked as completed.`))
             setSelected([])
           }}
         >
           <Icon name="check" size={16} />
-          Mark completed
+          {tr('Mark completed')}
         </button>
         <button
           type="button"
           className="danger"
           onClick={() => {
             removeActivities(live)
-            toast('Removed', `${live.length} transactions deleted.`, { icon: 'trash' })
+            toast(tr('Removed'), tr(`${live.length} transactions deleted.`), { icon: 'trash' })
             setSelected([])
           }}
         >
           <Icon name="trash" size={16} />
-          Delete
+          {tr('Delete')}
         </button>
-        <button type="button" className="x" onClick={() => setSelected([])} aria-label="Clear selection">
+        <button type="button" className="x" onClick={() => setSelected([])} aria-label={tr('Clear selection')}>
           <Icon name="close" size={16} />
         </button>
       </div>

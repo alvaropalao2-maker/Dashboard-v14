@@ -8,8 +8,10 @@ import { CountUp, Delta, PageHead, Popover } from '../components/ui'
 import { useApp } from '../lib/store'
 import { money } from '../lib/format'
 import { CURRENCIES, PNL, STATS } from '../data/seed'
+import { useTr } from '../lib/i18n'
 
 function WalletCard({ w, i, delay }) {
+  const tr = useTr()
   const { setWalletStatus, go, openModal } = useApp()
   const [menu, setMenu] = useState(false)
   return (
@@ -17,15 +19,15 @@ function WalletCard({ w, i, delay }) {
       <div className="w-head">
         <Flag code={w.flag} size={18} />
         <b>{w.code}</b>
-        <button type="button" className="w-dots" onClick={() => setMenu((m) => !m)} aria-label={`${w.code} wallet options`}>
+        <button type="button" className="w-dots" onClick={() => setMenu((m) => !m)} aria-label={tr(`${w.code} wallet options`)}>
           <Icon name={menu ? 'close' : 'dotsV'} size={menu ? 14 : 16} stroke={menu ? 2 : 2.6} />
         </button>
       </div>
       <strong>
         <CountUp value={w.amount} format={(n) => money(n, w.symbol)} delay={delay + i * 80} duration={1200} />
       </strong>
-      <small>Limit is {w.limit} a month</small>
-      <em>{w.status === 'active' ? 'Active' : 'Inactive'}</em>
+      <small>{tr('Limit is {limit} a month', { limit: w.limit })}</small>
+      <em>{w.status === 'active' ? tr('Active') : tr('Inactive')}</em>
 
       <div className="w-menu" aria-hidden={!menu}>
         <button
@@ -37,7 +39,7 @@ function WalletCard({ w, i, delay }) {
           }}
         >
           <Icon name={w.status === 'active' ? 'lock' : 'check'} size={14} />
-          {w.status === 'active' ? 'Deactivate' : 'Activate'}
+          {w.status === 'active' ? tr('Deactivate') : tr('Activate')}
         </button>
         <button
           type="button"
@@ -49,11 +51,11 @@ function WalletCard({ w, i, delay }) {
           }}
         >
           <Icon name="send" size={14} />
-          Send
+          {tr('Send')}
         </button>
         <button type="button" tabIndex={menu ? 0 : -1} onClick={() => go('manage')}>
           <Icon name="gear" size={14} />
-          Manage
+          {tr('Manage')}
         </button>
       </div>
     </div>
@@ -61,6 +63,7 @@ function WalletCard({ w, i, delay }) {
 }
 
 export default function Overview() {
+  const tr = useTr()
   const { user, currency, setCurrency, balance, wallets, spend, cards, openModal, go, booting } = useApp()
   const [hot, setHot] = useState('earnings')
   const [curOpen, setCurOpen] = useState(false)
@@ -71,15 +74,15 @@ export default function Overview() {
 
   return (
     <>
-      <PageHead title={`Good morning, ${user.first}`} sub="Stay on top of your tasks, monitor progress, and track status." />
+      <PageHead title={tr(`Good morning, ${user.first}`)} sub={tr('Stay on top of your tasks, monitor progress, and track status.')} />
 
       <div className="ov-grid">
         {/* ---------------- Total balance ---------------- */}
         <section className="card balance-card" style={{ '--d': '0ms' }}>
           <div className="bal-head rv" style={{ '--i': 0 }}>
-            <span className="card-label">Total Balance</span>
+            <span className="card-label">{tr('Total Balance')}</span>
             <div className="anchor">
-              <button type="button" className={`cur-btn ${curOpen ? 'on' : ''}`} onClick={() => setCurOpen((o) => !o)} aria-label="Change currency">
+              <button type="button" className={`cur-btn ${curOpen ? 'on' : ''}`} onClick={() => setCurOpen((o) => !o)} aria-label={tr('Change currency')}>
                 <Flag code={cur.flag} size={19} />
                 {cur.code}
                 <Icon name="chevDown" size={14} stroke={2} />
@@ -98,7 +101,7 @@ export default function Overview() {
                     <Flag code={c.flag} size={20} />
                     <span>
                       <b>{c.code}</b>
-                      <small>{c.name}</small>
+                      <small>{tr(c.name)}</small>
                     </span>
                     {c.code === currency ? <Icon name="check" size={16} stroke={2.2} /> : null}
                   </button>
@@ -112,25 +115,25 @@ export default function Overview() {
           </div>
           <div className="bal-delta rv" style={{ '--i': 2 }}>
             <Delta value={5} />
-            <span>than last month</span>
+            <span>{tr('than last month')}</span>
           </div>
 
           <div className="bal-actions rv" style={{ '--i': 3 }}>
             <button type="button" className="btn solid xl" onClick={() => openModal('transfer')}>
               <Icon name="transfer" size={20} />
-              Transfer
+              {tr('Transfer')}
             </button>
             <button type="button" className="btn soft xl" onClick={() => openModal('request')}>
               <Icon name="transfer" size={20} />
-              Request
+              {tr('Request')}
             </button>
           </div>
 
           <div className="wallets rv" style={{ '--i': 4 }}>
             <div className="wallets-head">
-              <b>Wallets</b>
+              <b>{tr('Wallets')}</b>
               <i />
-              <span>Total {wallets.length} wallets</span>
+              <span>{tr('Total {count} wallets', { count: wallets.length })}</span>
             </div>
             <div className="wallet-track">
               {wallets.map((w, i) => (
@@ -153,7 +156,7 @@ export default function Overview() {
             >
               <span className="stat-glow" aria-hidden="true" />
               <span className="stat-head">
-                <span>{s.label}</span>
+                <span>{tr(s.label)}</span>
                 <i className="stat-ic">
                   <Icon name={s.icon} size={17} />
                 </i>
@@ -163,7 +166,7 @@ export default function Overview() {
               </strong>
               <span className="stat-foot">
                 <Delta value={s.delta} glass={hot === s.id} />
-                <span>This month</span>
+                <span>{tr('This month')}</span>
               </span>
             </button>
           ))}
@@ -172,10 +175,10 @@ export default function Overview() {
         {/* ---------------- Total income ---------------- */}
         <section className="card income-card" style={{ '--d': '180ms' }}>
           <h2 className="card-title big rv" style={{ '--i': 0 }}>
-            Total Income
+            {tr('Total Income')}
           </h2>
           <p className="card-sub rv" style={{ '--i': 1 }}>
-            View your income in a certain period of time
+            {tr('View your income in a certain period of time')}
           </p>
           <div className="pnl-panel">
             <PnlChart data={PNL} />
@@ -186,11 +189,11 @@ export default function Overview() {
           {/* ---------------- Spending limit ---------------- */}
           <section className="card limit-card" style={{ '--d': '260ms' }}>
             <h2 className="card-title rv" style={{ '--i': 0 }}>
-              Monthly Spending Limit
+              {tr('Monthly Spending Limit')}
             </h2>
-            <button type="button" className="limit-bar rv" style={{ '--i': 1 }} onClick={() => go('manage')} aria-label="Adjust spending limit">
+            <button type="button" className="limit-bar rv" style={{ '--i': 1 }} onClick={() => go('manage')} aria-label={tr('Adjust spending limit')}>
               <span className={`limit-fill ${pct >= 90 ? 'warn' : ''}`} style={{ width: `${pct}%` }}>
-                <em className="limit-tip">{Math.round(pct)}% used · Adjust</em>
+                <em className="limit-tip">{tr('{pct}% used · Adjust', { pct: Math.round(pct) })}</em>
               </span>
             </button>
             <div className="limit-foot rv" style={{ '--i': 2 }}>
@@ -198,7 +201,7 @@ export default function Overview() {
                 <b>
                   <CountUp value={spend.spent} format={(n) => money(n)} delay={lead + 200} />
                 </b>{' '}
-                spent out of
+                {tr('spent out of')}
               </span>
               <b>{money(spend.limit)}</b>
             </div>
@@ -210,10 +213,10 @@ export default function Overview() {
               <span className="ring-ic">
                 <Icon name="card" size={20} />
               </span>
-              <h2 className="card-title">My Cards</h2>
+              <h2 className="card-title">{tr('My Cards')}</h2>
               <button type="button" className="add-new" onClick={() => openModal('addCard')}>
                 <Icon name="plus" size={16} stroke={2} />
-                Add new
+                {tr('Add new')}
               </button>
             </div>
             <div className="cards-track">
